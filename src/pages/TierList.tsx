@@ -16,6 +16,7 @@ export interface TierList {
 const TierList = () => {
   const [tierList, setTierList] = useState<TierList[]>(mockData);
   const [tierListItems, setTierListItems] = useState(imagesTest);
+
   const dragStartHandle = (event: React.DragEvent<HTMLImageElement>) => {
     const imageSrc = event.currentTarget.src;
     const tierListItemIndex = event.currentTarget.dataset?.tierlistItemIndex;
@@ -27,14 +28,8 @@ const TierList = () => {
       "text/plain",
       `${tierListItemIndex}-${dragStartRowIndex}`
     );
-
-    var img = document.createElement("img");
-
-    img.src = "http://localhost:5173/public/images/about01.png";
-    img.style.width = "140px";
-    img.style.height = "120px";
-    event.dataTransfer.setDragImage(img, 0, 0);
   };
+
   const dragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
@@ -47,7 +42,6 @@ const TierList = () => {
     );
     const imageSrc = event.dataTransfer.getData("URL");
     const isTierListItemSelected = event.dataTransfer.getData("text");
-    console.log(isTierListItemSelected);
     if (isTierListItemSelected !== "undefined-undefined") {
       const [tierListItemIndex, dragStartRowIndex] =
         isTierListItemSelected.split("-");
@@ -65,6 +59,7 @@ const TierList = () => {
       setTierList(filteredTierListItems);
     } else {
       const filteredTierListItems = tierListItems.filter((item) => {
+        // hardcoded
         const fileName = imageSrc.split("/")[4];
         if (!item.includes(fileName)) {
           return item;
@@ -73,13 +68,42 @@ const TierList = () => {
       setTierListItems(filteredTierListItems);
     }
 
-    const updatedTierList = tierList.map((tierListRow, index) => {
+    // need refactoring
+    const updatedTierListItems = [
+      ...tierList[droppedRowIndex].tierListSelectedItems,
+      imageSrc,
+    ];
+
+    const updatedTierList = [...tierList].map((tierListRow, index) => {
       if (index === droppedRowIndex) {
-        tierListRow.tierListSelectedItems.push(imageSrc);
+        tierListRow.tierListSelectedItems = [...updatedTierListItems];
       }
       return tierListRow;
     });
     setTierList(updatedTierList);
+  };
+
+  const dropNotSelectedHandle = (event: React.DragEvent<HTMLDivElement>) => {
+    // need refactoring
+    const isTierListItemSelected = event.dataTransfer.getData("text");
+    if (isTierListItemSelected === "undefined-undefined") return;
+    const imageSrc = event.dataTransfer.getData("URL");
+    const [tierListItemIndex, dragStartRowIndex] =
+      isTierListItemSelected.split("-");
+    const updatedTierListItems = [
+      ...tierList[Number(dragStartRowIndex)].tierListSelectedItems,
+    ];
+    updatedTierListItems.splice(Number(tierListItemIndex), 1);
+
+    const filteredTierListItems = tierList.map((tierListItem, index) => {
+      if (index === Number(dragStartRowIndex)) {
+        tierListItem.tierListSelectedItems = updatedTierListItems;
+      }
+      return tierListItem;
+    });
+    setTierList(filteredTierListItems);
+
+    setTierListItems([...tierListItems, imageSrc]);
   };
   return (
     <section className="flex flex-col gap-6 p-4">
@@ -134,7 +158,11 @@ const TierList = () => {
           </div>
         ))}
       </div>
-      <div className="flex flex-wrap">
+      <div
+        className="flex flex-wrap w-full min-h-[135px] p-2 bg-gray-800"
+        onDrop={dropNotSelectedHandle}
+        onDragOver={dragOverHandler}
+      >
         {tierListItems.map((tierListItem, index) => (
           <img
             key={index}
