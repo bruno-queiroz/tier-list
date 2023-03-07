@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -11,10 +12,10 @@ const Header = () => {
         <nav>
           <ul className="flex gap-4">
             <li>
-              <a href="">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <a href="">Create Tier List</a>
+              <Link to="/create-tier-list">Create Tier List</Link>
             </li>
           </ul>
         </nav>
