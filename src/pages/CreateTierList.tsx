@@ -90,20 +90,29 @@ const CreateTierList = () => {
       >
         <label className="flex flex-col gap-4">
           <span className="font-medium text-xl ">Name of The Tier List</span>
-          <input type="text" className="bg-gray-800 p-3" ref={nameInputRef} />
+          <input
+            type="text"
+            className="bg-gray-800 p-3"
+            ref={nameInputRef}
+            required
+          />
         </label>
 
-        <label className="flex flex-col gap-4">
+        <label className="flex flex-col gap-4 relative">
           <span className="font-medium text-xl ">Tier List Image</span>
-          <input
-            type="file"
-            accept="image/png, image/jpeg"
-            className="sr-only"
-            onChange={handleTierListPreviewImg}
-          />
+
           <div className="flex gap-2 justify-center items-center bg-gray-800 p-3 border-S border-dotted border-[3px] cursor-pointer">
             <ImageIcon className="text-4xl" />
             <span>Add an Image</span>
+          </div>
+          <div className="absolute bottom-0">
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              className="sr-only"
+              onChange={handleTierListPreviewImg}
+              required
+            />
           </div>
         </label>
         {tierListImagePreview && (
@@ -114,17 +123,21 @@ const CreateTierList = () => {
           />
         )}
 
-        <label className="flex flex-col gap-4">
+        <label className="flex flex-col gap-4 relative">
           <span className="font-medium text-xl ">
             Set of Images to be the Tier List Items
           </span>
-          <input
-            type="file"
-            accept="image/png, image/jpeg"
-            className="sr-only"
-            multiple
-            onChange={handleTierListItemsPreview}
-          />
+          <div className="absolute bottom-0">
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              className="sr-only"
+              multiple
+              required
+              onChange={handleTierListItemsPreview}
+            />
+          </div>
+
           <div className="flex gap-2 justify-center items-center bg-gray-800 p-3 border-A border-dotted border-[3px] cursor-pointer">
             <ImageIcon className="text-4xl" />
             <span>Add Images</span>
