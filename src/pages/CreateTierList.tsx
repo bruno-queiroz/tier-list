@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
 
 import { BiImageAdd as ImageIcon } from "react-icons/bi";
+import { postTierList } from "../fetch/postTierList";
 
-interface TierList {
+export interface TierListFormData {
   name: string;
   tierListImage: string;
   tierListItems: string[];
@@ -19,13 +20,6 @@ const readAsDataURLAsync = (tierListItem: File) =>
   });
 
 const CreateTierList = () => {
-  const [tierListFormData, setTierListFormData] = useState<TierList>({
-    name: "",
-    tierListImage: "",
-    tierListItems: [],
-    tiers: ["S", "A", "B", "C", "D"],
-  });
-
   const [tierListImagePreview, setTierListImagePreview] = useState("");
   const [tierListItemsPreview, setTierListItemsPreview] = useState<string[]>(
     []
@@ -40,8 +34,7 @@ const CreateTierList = () => {
 
   const handleTierListSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    setTierListFormData({
+    const tierListFormData = {
       name: nameInputRef.current?.value || "",
       tierListImage: tierListImagePreview,
       tierListItems: tierListItemsPreview,
@@ -52,7 +45,9 @@ const CreateTierList = () => {
         CInputRef.current?.value || "C",
         DInputRef.current?.value || "D",
       ],
-    });
+    };
+
+    postTierList(tierListFormData);
   };
 
   const handleTierListPreviewImg = (
@@ -108,7 +103,7 @@ const CreateTierList = () => {
           <div className="absolute bottom-0">
             <input
               type="file"
-              accept="image/png, image/jpeg"
+              accept="image/png, image/jpeg, image/jpe"
               className="sr-only"
               onChange={handleTierListPreviewImg}
               required
