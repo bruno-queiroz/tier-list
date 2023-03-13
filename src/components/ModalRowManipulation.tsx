@@ -69,7 +69,9 @@ const colorOptions = [
 
 const ModalRowManipulation = () => {
   const tierList = useTierListStore((state) => state.tierList);
+  const tierListItems = useTierListStore((state) => state.tierListItems);
   const setTierList = useTierListStore((state) => state.setTierList);
+  const setTierListItems = useTierListStore((state) => state.setTierListItems);
   const changeModalRowState = useTierListStore(
     (state) => state.changeRowModalState
   );
@@ -105,6 +107,16 @@ const ModalRowManipulation = () => {
     );
     setTierList(updatedTierList);
     changeModalRowState(false);
+  };
+
+  const clearRowImages = () => {
+    const updatedTierList = [...tierList];
+    setTierListItems([
+      ...tierListItems,
+      ...updatedTierList[rowModalIndex].tierListSelectedItems,
+    ]);
+    updatedTierList[rowModalIndex].tierListSelectedItems = [];
+    setTierList(updatedTierList);
   };
 
   // const test = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
@@ -156,7 +168,9 @@ const ModalRowManipulation = () => {
         <button className="py-4 rounded bg-S" onClick={deleteRow}>
           Delete This Row
         </button>
-        <button className="py-4 rounded bg-A">Clear This Row Images</button>
+        <button className="py-4 rounded bg-A" onClick={clearRowImages}>
+          Clear This Row Images
+        </button>
         <button className="py-4 rounded bg-C" onClick={addRowAbove}>
           Add a Row Above
         </button>
