@@ -9,6 +9,7 @@ module.exports = {
         B: "#FFDF7F",
         C: "#FFFF7F",
         D: "#BFFF7F",
+        primaryDarkGray: "#1A1A17",
       },
     },
   },
