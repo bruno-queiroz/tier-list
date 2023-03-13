@@ -88,6 +88,16 @@ const ModalRowManipulation = () => {
     setTierList(tierListClone);
   };
 
+  const addRowBelow = () => {
+    const tierListClone = [...tierList];
+    tierListClone.splice(rowModalIndex + 1, 0, {
+      text: "New",
+      color: "#FFFF7F",
+      tierListSelectedItems: [],
+    });
+    setTierList(tierListClone);
+  };
+
   // const test = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
   //   console.log(e.currentTarget.checked);
   // };
@@ -144,7 +154,9 @@ const ModalRowManipulation = () => {
         <button className="py-4 rounded bg-C" onClick={addRowAbove}>
           Add a Row Above
         </button>
-        <button className="py-4 rounded bg-D">Add a Row Below</button>
+        <button className="py-4 rounded bg-D" onClick={addRowBelow}>
+          Add a Row Below
+        </button>
       </div>
     </section>
   );
