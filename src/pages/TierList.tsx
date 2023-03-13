@@ -5,7 +5,9 @@ import {
   MdOutlineKeyboardArrowUp as ArrowUpIcon,
 } from "react-icons/md";
 
-import { mockData, imagesTest } from "../../public/mockData";
+import Modal from "../components/Modal";
+import ModalRowManipulation from "../components/ModalRowManipulation";
+import { useTierListStore } from "../zustandStore/store";
 
 export interface TierList {
   color: string;
@@ -14,9 +16,17 @@ export interface TierList {
 }
 
 const TierList = () => {
-  const [tierList, setTierList] = useState<TierList[]>(mockData);
-  const [tierListItems, setTierListItems] = useState(imagesTest);
-
+  const tierList = useTierListStore((state) => state.tierList);
+  const setTierList = useTierListStore((state) => state.setTierList);
+  const tierListItems = useTierListStore((state) => state.tierListItems);
+  const setTierListItems = useTierListStore((state) => state.setTierListItems);
+  const isRowModalOpen = useTierListStore((state) => state.isRowModalOpen);
+  const changeRowModalIndex = useTierListStore(
+    (state) => state.changeRowModalIndex
+  );
+  const changeRowModalState = useTierListStore(
+    (state) => state.changeRowModalState
+  );
   const dragStartHandle = (event: React.DragEvent<HTMLImageElement>) => {
     const imageSrc = event.currentTarget.src;
     const tierListItemIndex = event.currentTarget.dataset?.tierlistItemIndex;
@@ -105,9 +115,19 @@ const TierList = () => {
 
     setTierListItems([...tierListItems, imageSrc]);
   };
+
+  const handleOpenModalRowManipulation = (selectedRowIndex: number) => {
+    changeRowModalState(true);
+    changeRowModalIndex(selectedRowIndex);
+  };
   return (
     <section className="flex flex-col gap-6 p-4">
       <h1 className="text-5xl font-bold text-center my-4">~ Tier List</h1>
+      {isRowModalOpen && (
+        <Modal>
+          <ModalRowManipulation />
+        </Modal>
+      )}
 
       <div className="flex flex-col">
         {tierList.map((row, index) => (
@@ -117,7 +137,8 @@ const TierList = () => {
               style={{ backgroundColor: row.color }}
             >
               <div
-                className={`grid place-content-center text-xl w-[140px] h-[120px] text-[#1A1A17] p-4 overflow-hidden text-center`}
+                className={`text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center `}
+                contentEditable
               >
                 {row.text}
               </div>
@@ -142,7 +163,10 @@ const TierList = () => {
             </div>
             <div className="bg-black">
               <div className="flex items-center leading-[0] h-[120px] gap-2 text-5xl">
-                <button>
+                <button
+                  className="pl-[5px]"
+                  onClick={() => handleOpenModalRowManipulation(index)}
+                >
                   <SettingsIcon />
                 </button>
                 <div className="flex flex-col">
