@@ -119,6 +119,14 @@ const ModalRowManipulation = () => {
     setTierList(updatedTierList);
   };
 
+  const editItemtext = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const updatedTierList = [...tierList];
+    updatedTierList[rowModalIndex].text = event.target.value;
+
+    setTextAreaValue(event.target.value);
+    setTierList(updatedTierList);
+  };
+
   // const test = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
   //   console.log(e.currentTarget.checked);
   // };
@@ -161,7 +169,7 @@ const ModalRowManipulation = () => {
         <textarea
           className="bg-[#2D2D28] indent-1"
           value={textAreaValue}
-          onChange={(e) => setTextAreaValue(e.target.value)}
+          onChange={(e) => editItemtext(e)}
         ></textarea>
       </label>
       <div className="grid grid-cols-2 gap-4 text-primaryDarkGray font-semibold">
