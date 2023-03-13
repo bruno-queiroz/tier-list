@@ -78,6 +78,7 @@ const ModalRowManipulation = () => {
     tierList[rowModalIndex]?.text
   );
 
+  // need IDs
   const addRowAbove = () => {
     const tierListClone = [...tierList];
     tierListClone.splice(rowModalIndex, 0, {
@@ -96,6 +97,14 @@ const ModalRowManipulation = () => {
       tierListSelectedItems: [],
     });
     setTierList(tierListClone);
+  };
+
+  const deleteRow = () => {
+    const updatedTierList = tierList.filter(
+      (_, index) => index !== rowModalIndex
+    );
+    setTierList(updatedTierList);
+    changeModalRowState(false);
   };
 
   // const test = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
@@ -144,10 +153,7 @@ const ModalRowManipulation = () => {
         ></textarea>
       </label>
       <div className="grid grid-cols-2 gap-4 text-primaryDarkGray font-semibold">
-        <button
-          className="py-4 rounded bg-S"
-          onClick={() => changeModalRowState(false)}
-        >
+        <button className="py-4 rounded bg-S" onClick={deleteRow}>
           Delete This Row
         </button>
         <button className="py-4 rounded bg-A">Clear This Row Images</button>
