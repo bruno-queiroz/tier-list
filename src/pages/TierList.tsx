@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { AiFillSetting as SettingsIcon } from "react-icons/ai";
 import {
   MdOutlineKeyboardArrowDown as ArrowDownIcon,
@@ -142,16 +142,18 @@ const TierList = () => {
         {tierList.map((row, index) => (
           <div className="flex border-b-[3px] border-black" key={index}>
             <div
-              className="grid place-content-center"
+              className="grid place-content-center relative"
               style={{ backgroundColor: row.color }}
             >
+              <div className="text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center pointer-events-none bg-transparent absolute">
+                {row.text}
+              </div>
               <div
                 className={`text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center `}
                 contentEditable
+                style={{ color: row.color }}
                 onInput={(e) => updateItemText(e, index)}
-              >
-                {row.text}
-              </div>
+              ></div>
             </div>
 
             <div
@@ -171,7 +173,7 @@ const TierList = () => {
                 />
               ))}
             </div>
-            <div className="bg-black">
+            <div className="flex items-center bg-black">
               <div className="flex items-center leading-[0] h-[120px] gap-2 text-5xl">
                 <button
                   className="pl-[5px]"
