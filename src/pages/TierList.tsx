@@ -120,6 +120,15 @@ const TierList = () => {
     changeRowModalState(true);
     changeRowModalIndex(selectedRowIndex);
   };
+
+  const updateItemText = (
+    event: React.FormEvent<HTMLDivElement>,
+    rowIndex: number
+  ) => {
+    const updatedTierList = [...tierList];
+    updatedTierList[rowIndex].text = event.currentTarget.textContent || "";
+    setTierList(updatedTierList);
+  };
   return (
     <section className="flex flex-col gap-6 p-4">
       <h1 className="text-5xl font-bold text-center my-4">~ Tier List</h1>
@@ -139,6 +148,7 @@ const TierList = () => {
               <div
                 className={`text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center `}
                 contentEditable
+                onInput={(e) => updateItemText(e, index)}
               >
                 {row.text}
               </div>
