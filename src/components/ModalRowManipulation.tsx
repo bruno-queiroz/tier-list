@@ -127,9 +127,11 @@ const ModalRowManipulation = () => {
     setTierList(updatedTierList);
   };
 
-  // const test = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-  //   console.log(e.currentTarget.checked);
-  // };
+  const changeLabelBackgroundColor = (color: string) => {
+    const updatedTierList = [...tierList];
+    updatedTierList[rowModalIndex].color = color;
+    setTierList(updatedTierList);
+  };
   return (
     <section className="flex flex-col gap-8 py-8 relative">
       <button
@@ -146,19 +148,13 @@ const ModalRowManipulation = () => {
         </legend>
         <div className="flex gap-2 justify-center flex-wrap">
           {colorOptions?.map((color, index) => (
-            <label className="">
-              <input
-                type="radio"
-                className="sr-only"
-                name="background-color"
-                aria-label={color.colorName}
-                key={index}
-              />
-              <div
-                className="w-[40px] h-[40px] rounded-[50%] focus:border-white focus:border-[2px]"
-                style={{ backgroundColor: color.color }}
-              ></div>
-            </label>
+            <button
+              key={index}
+              type="button"
+              className="w-[40px] h-[40px] rounded-[50%] focus:border-white focus:border-[2px]"
+              style={{ backgroundColor: color.color }}
+              onClick={() => changeLabelBackgroundColor(color.color)}
+            ></button>
           ))}
         </div>
       </fieldset>
