@@ -129,6 +129,22 @@ const TierList = () => {
     updatedTierList[rowIndex].text = event.currentTarget.textContent || "";
     setTierList(updatedTierList);
   };
+  const moveItemUp = (selectedItemIndex: number) => {
+    if (selectedItemIndex === 0) return;
+    const tierListClone = [...tierList];
+    const itemSelected = tierListClone.slice(
+      selectedItemIndex,
+      selectedItemIndex + 1
+    );
+    const desirablePlaceItem = tierListClone.slice(
+      selectedItemIndex - 1,
+      selectedItemIndex
+    );
+
+    tierListClone.splice(selectedItemIndex - 1, 1, ...itemSelected);
+    tierListClone.splice(selectedItemIndex, 1, ...desirablePlaceItem);
+    setTierList(tierListClone);
+  };
   return (
     <section className="flex flex-col gap-6 p-4">
       <h1 className="text-5xl font-bold text-center my-4">~ Tier List</h1>
@@ -182,7 +198,7 @@ const TierList = () => {
                   <SettingsIcon />
                 </button>
                 <div className="flex flex-col">
-                  <button>
+                  <button onClick={() => moveItemUp(index)}>
                     <ArrowUpIcon />
                   </button>
                   <button>
