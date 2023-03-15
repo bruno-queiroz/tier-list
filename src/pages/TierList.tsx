@@ -44,12 +44,42 @@ const TierList = () => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   };
+  const onDropItemHandler = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const droppedRowIndex = Number(
+      (event.nativeEvent.target as HTMLDivElement)?.parentElement?.dataset
+        ?.rowIndex as string
+    );
+    const itemDroppedIndex = Number(
+      (event.nativeEvent.target as HTMLDivElement)?.dataset?.tierlistItemIndex
+    );
+    const imageSrc = event.dataTransfer.getData("URL");
+    const isTierListItemSelected = event.dataTransfer.getData("text");
 
-  const dropHandler = (event: React.DragEvent<HTMLDivElement>) => {
+    const [tierListItemIndex, dragStartRowIndex] =
+      isTierListItemSelected.split("-");
+    const tierListClone = [...tierList];
+
+    tierListClone[Number(dragStartRowIndex)].tierListSelectedItems.splice(
+      Number(tierListItemIndex),
+      1
+    );
+    tierListClone[droppedRowIndex].tierListSelectedItems.splice(
+      itemDroppedIndex,
+      0,
+      imageSrc
+    );
+
+    setTierList(tierListClone);
+  };
+
+  const onDropHandler = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const droppedRowIndex = Number(
       (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex as string
     );
+
     const imageSrc = event.dataTransfer.getData("URL");
     const isTierListItemSelected = event.dataTransfer.getData("text");
     if (isTierListItemSelected !== "undefined-undefined") {
@@ -191,7 +221,7 @@ const TierList = () => {
             <div
               className="flex flex-wrap bg-[#1A1A17] flex-1"
               onDragOver={dragOverHandler}
-              onDrop={dropHandler}
+              onDrop={onDropHandler}
               data-row-index={index}
             >
               {row.tierListSelectedItems.map((tierListItem, index) => (
@@ -201,6 +231,8 @@ const TierList = () => {
                   draggable="true"
                   onDragStart={dragStartHandle}
                   data-tierlist-item-index={index}
+                  onDragOver={dragOverHandler}
+                  onDrop={onDropItemHandler}
                   src={tierListItem}
                 />
               ))}
