@@ -56,15 +56,22 @@ const TierList = () => {
     );
     const imageSrc = event.dataTransfer.getData("URL");
     const isTierListItemSelected = event.dataTransfer.getData("text");
-
-    const [tierListItemIndex, dragStartRowIndex] =
-      isTierListItemSelected.split("-");
     const tierListClone = [...tierList];
 
-    tierListClone[Number(dragStartRowIndex)].tierListSelectedItems.splice(
-      Number(tierListItemIndex),
-      1
-    );
+    if (isTierListItemSelected !== "undefined-undefined") {
+      const [tierListItemIndex, dragStartRowIndex] =
+        isTierListItemSelected.split("-");
+
+      tierListClone[Number(dragStartRowIndex)].tierListSelectedItems.splice(
+        Number(tierListItemIndex),
+        1
+      );
+    } else {
+      const tierListItemsClone = [...tierListItems];
+      const tierListItemNotSelectedIndex = tierListItemsClone.indexOf(imageSrc);
+      tierListItemsClone.splice(tierListItemNotSelectedIndex, 1);
+      setTierListItems(tierListItemsClone);
+    }
     tierListClone[droppedRowIndex].tierListSelectedItems.splice(
       itemDroppedIndex,
       0,
