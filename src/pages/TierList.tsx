@@ -166,19 +166,19 @@ const TierList = () => {
   };
   const moveItemdown = (selectedItemIndex: number) => {
     if (tierList.length - 1 <= selectedItemIndex) return;
-    const tierListClone = [...tierList];
-    const itemSelected = tierListClone.slice(
+    const updatedTierList = [...tierList];
+    const itemSelected = updatedTierList.slice(
       selectedItemIndex,
       selectedItemIndex + 1
     );
 
-    const desirablePlaceItem = tierListClone.slice(
+    const desirablePlaceItem = updatedTierList.slice(
       selectedItemIndex + 1,
       selectedItemIndex + 2
     );
-    tierListClone.splice(selectedItemIndex + 1, 1, ...itemSelected);
-    tierListClone.splice(selectedItemIndex, 1, ...desirablePlaceItem);
-    setTierList(tierListClone);
+    updatedTierList.splice(selectedItemIndex + 1, 1, ...itemSelected);
+    updatedTierList.splice(selectedItemIndex, 1, ...desirablePlaceItem);
+    setTierList(updatedTierList);
   };
   return (
     <section className="flex flex-col gap-6 p-4">
