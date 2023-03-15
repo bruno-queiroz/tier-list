@@ -58,13 +58,13 @@ const TierList = () => {
     );
     const imageSrc = event.dataTransfer.getData("URL");
     const isTierListItemSelected = event.dataTransfer.getData("text");
-    const tierListClone = [...tierList];
+    const updatedTierList = [...tierList];
 
     if (isTierListItemSelected !== "undefined-undefined") {
       const [tierListItemIndex, dragStartRowIndex] =
         isTierListItemSelected.split("-");
 
-      tierListClone[Number(dragStartRowIndex)].tierListSelectedItems.splice(
+      updatedTierList[Number(dragStartRowIndex)].tierListSelectedItems.splice(
         Number(tierListItemIndex),
         1
       );
@@ -74,13 +74,13 @@ const TierList = () => {
       tierListItemsClone.splice(tierListItemSelectedIndex, 1);
       setTierListItems(tierListItemsClone);
     }
-    tierListClone[droppedRowIndex].tierListSelectedItems.splice(
+    updatedTierList[droppedRowIndex].tierListSelectedItems.splice(
       itemDroppedIndex,
       0,
       imageSrc
     );
 
-    setTierList(tierListClone);
+    setTierList(updatedTierList);
   };
 
   const onDropHandler = (event: React.DragEvent<HTMLDivElement>) => {
