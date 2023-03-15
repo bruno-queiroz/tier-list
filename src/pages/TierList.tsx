@@ -112,26 +112,25 @@ const TierList = () => {
     setTierList(updatedTierList);
   };
 
-  const dropNotSelectedHandle = (event: React.DragEvent<HTMLDivElement>) => {
-    // need refactoring
+  const onDropItemsNotSelectedHandle = (
+    event: React.DragEvent<HTMLDivElement>
+  ) => {
+    event.preventDefault();
     const isTierListItemSelected = event.dataTransfer.getData("text");
+
     if (isTierListItemSelected === "undefined-undefined") return;
+
     const imageSrc = event.dataTransfer.getData("URL");
+    const updatedTierList = [...tierList];
     const [tierListItemIndex, dragStartRowIndex] =
       isTierListItemSelected.split("-");
-    const updatedTierListItems = [
-      ...tierList[Number(dragStartRowIndex)].tierListSelectedItems,
-    ];
-    updatedTierListItems.splice(Number(tierListItemIndex), 1);
 
-    const filteredTierListItems = tierList.map((tierListItem, index) => {
-      if (index === Number(dragStartRowIndex)) {
-        tierListItem.tierListSelectedItems = updatedTierListItems;
-      }
-      return tierListItem;
-    });
-    setTierList(filteredTierListItems);
+    updatedTierList[Number(dragStartRowIndex)].tierListSelectedItems.splice(
+      Number(tierListItemIndex),
+      1
+    );
 
+    setTierList(updatedTierList);
     setTierListItems([...tierListItems, imageSrc]);
   };
 
@@ -249,7 +248,7 @@ const TierList = () => {
       </div>
       <div
         className="flex flex-wrap w-full min-h-[135px] p-2 bg-gray-800"
-        onDrop={dropNotSelectedHandle}
+        onDrop={onDropItemsNotSelectedHandle}
         onDragOver={dragOverHandler}
       >
         {tierListItems.map((tierListItem, index) => (
