@@ -27,6 +27,7 @@ const TierList = () => {
   const changeRowModalState = useTierListStore(
     (state) => state.changeRowModalState
   );
+
   const dragStartHandle = (event: React.DragEvent<HTMLImageElement>) => {
     const imageSrc = event.currentTarget.src;
     const tierListItemIndex = event.currentTarget.dataset?.tierlistItemIndex;
@@ -44,12 +45,13 @@ const TierList = () => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   };
+
   const onDropItemHandler = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
     const droppedRowIndex = Number(
       (event.nativeEvent.target as HTMLDivElement)?.parentElement?.dataset
-        ?.rowIndex as string
+        ?.rowIndex
     );
     const itemDroppedIndex = Number(
       (event.nativeEvent.target as HTMLDivElement)?.dataset?.tierlistItemIndex
@@ -68,8 +70,8 @@ const TierList = () => {
       );
     } else {
       const tierListItemsClone = [...tierListItems];
-      const tierListItemNotSelectedIndex = tierListItemsClone.indexOf(imageSrc);
-      tierListItemsClone.splice(tierListItemNotSelectedIndex, 1);
+      const tierListItemSelectedIndex = tierListItemsClone.indexOf(imageSrc);
+      tierListItemsClone.splice(tierListItemSelectedIndex, 1);
       setTierListItems(tierListItemsClone);
     }
     tierListClone[droppedRowIndex].tierListSelectedItems.splice(
@@ -83,50 +85,30 @@ const TierList = () => {
 
   const onDropHandler = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const droppedRowIndex = Number(
-      (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex as string
-    );
 
+    const droppedRowIndex = Number(
+      (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
+    );
     const imageSrc = event.dataTransfer.getData("URL");
     const isTierListItemSelected = event.dataTransfer.getData("text");
+    const updatedTierList = [...tierList];
+
     if (isTierListItemSelected !== "undefined-undefined") {
       const [tierListItemIndex, dragStartRowIndex] =
         isTierListItemSelected.split("-");
-      const updatedTierListItems = [
-        ...tierList[Number(dragStartRowIndex)].tierListSelectedItems,
-      ];
-      updatedTierListItems.splice(Number(tierListItemIndex), 1);
 
-      const filteredTierListItems = tierList.map((tierListItem, index) => {
-        if (index === Number(dragStartRowIndex)) {
-          tierListItem.tierListSelectedItems = updatedTierListItems;
-        }
-        return tierListItem;
-      });
-      setTierList(filteredTierListItems);
+      updatedTierList[Number(dragStartRowIndex)].tierListSelectedItems.splice(
+        Number(tierListItemIndex),
+        1
+      );
     } else {
-      const filteredTierListItems = tierListItems.filter((item) => {
-        // hardcoded
-        const fileName = imageSrc.split("/")[4];
-        if (!item.includes(fileName)) {
-          return item;
-        }
-      });
-      setTierListItems(filteredTierListItems);
+      const tierListItemsClone = [...tierListItems];
+      const tierListItemSelectedIndex = tierListItemsClone.indexOf(imageSrc);
+      tierListItemsClone.splice(tierListItemSelectedIndex, 1);
+      setTierListItems(tierListItemsClone);
     }
 
-    // need refactoring
-    const updatedTierListItems = [
-      ...tierList[droppedRowIndex].tierListSelectedItems,
-      imageSrc,
-    ];
-
-    const updatedTierList = [...tierList].map((tierListRow, index) => {
-      if (index === droppedRowIndex) {
-        tierListRow.tierListSelectedItems = [...updatedTierListItems];
-      }
-      return tierListRow;
-    });
+    updatedTierList[droppedRowIndex].tierListSelectedItems.push(imageSrc);
     setTierList(updatedTierList);
   };
 
