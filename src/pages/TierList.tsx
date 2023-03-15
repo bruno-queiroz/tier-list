@@ -112,6 +112,25 @@ const TierList = () => {
     setTierList(updatedTierList);
   };
 
+  const onDropItemNotSelectedHandle = (
+    event: React.DragEvent<HTMLDivElement>
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const updatedTierListItems = [...tierListItems];
+    const imageSrc = event.dataTransfer.getData("URL");
+    const itemSelectedIndex = tierListItems.indexOf(imageSrc);
+    const itemDroppedIndex = Number(
+      (event.nativeEvent.target as HTMLDivElement)?.dataset?.tierlistItemIndex
+    );
+
+    updatedTierListItems.splice(itemSelectedIndex, 1);
+    updatedTierListItems.splice(itemDroppedIndex, 0, imageSrc);
+
+    setTierListItems(updatedTierListItems);
+  };
+
   const onDropItemsNotSelectedHandle = (
     event: React.DragEvent<HTMLDivElement>
   ) => {
@@ -181,7 +200,7 @@ const TierList = () => {
   };
   return (
     <section className="flex flex-col gap-6 p-4">
-      <h1 className="text-5xl font-bold text-center my-4">~ Tier List</h1>
+      <h1 className="text-5xl font-bold text-center my-4">~ fix input bug</h1>
       {isRowModalOpen && (
         <Modal>
           <ModalRowManipulation />
@@ -257,6 +276,9 @@ const TierList = () => {
             className="w-[140px] h-[120px] bg-green-400 cursor-pointer"
             draggable="true"
             onDragStart={dragStartHandle}
+            onDrop={onDropItemNotSelectedHandle}
+            onDragOver={dragOverHandler}
+            data-tierlist-item-index={index}
             src={tierListItem}
           />
         ))}
