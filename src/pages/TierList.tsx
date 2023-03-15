@@ -150,19 +150,19 @@ const TierList = () => {
   };
   const moveItemUp = (selectedItemIndex: number) => {
     if (selectedItemIndex === 0) return;
-    const tierListClone = [...tierList];
-    const itemSelected = tierListClone.slice(
+    const updatedTierList = [...tierList];
+    const itemSelected = updatedTierList.slice(
       selectedItemIndex,
       selectedItemIndex + 1
     );
-    const desirablePlaceItem = tierListClone.slice(
+    const desirablePlaceItem = updatedTierList.slice(
       selectedItemIndex - 1,
       selectedItemIndex
     );
 
-    tierListClone.splice(selectedItemIndex - 1, 1, ...itemSelected);
-    tierListClone.splice(selectedItemIndex, 1, ...desirablePlaceItem);
-    setTierList(tierListClone);
+    updatedTierList.splice(selectedItemIndex - 1, 1, ...itemSelected);
+    updatedTierList.splice(selectedItemIndex, 1, ...desirablePlaceItem);
+    setTierList(updatedTierList);
   };
   const moveItemdown = (selectedItemIndex: number) => {
     if (tierList.length - 1 <= selectedItemIndex) return;
