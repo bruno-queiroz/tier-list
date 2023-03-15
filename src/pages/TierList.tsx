@@ -122,7 +122,8 @@ const TierList = () => {
     const imageSrc = event.dataTransfer.getData("URL");
     const itemSelectedIndex = tierListItems.indexOf(imageSrc);
     const itemDroppedIndex = Number(
-      (event.nativeEvent.target as HTMLDivElement)?.dataset?.tierlistItemIndex
+      (event.nativeEvent.target as HTMLDivElement)?.dataset
+        ?.itemNotSelectedIndex
     );
 
     updatedTierListItems.splice(itemSelectedIndex, 1);
@@ -278,7 +279,7 @@ const TierList = () => {
             onDragStart={dragStartHandle}
             onDrop={onDropItemNotSelectedHandle}
             onDragOver={dragOverHandler}
-            data-tierlist-item-index={index}
+            data-item-not-selected-index={index}
             src={tierListItem}
           />
         ))}
