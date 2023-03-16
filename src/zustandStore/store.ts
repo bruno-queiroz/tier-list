@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { imagesTest, mockData } from "../../public/mockData";
-import { TierList } from "../pages/TierList";
+import { TierList, TierListItems } from "../pages/TierList";
 
 interface TierListState {
   tierList: TierList[];
-  tierListItems: string[];
+  tierListItems: TierListItems[];
   isRowModalOpen: boolean;
   rowModalIndex: number;
   setTierList: (tierList: TierList[]) => void;
-  setTierListItems: (tierListItems: string[]) => void;
+  setTierListItems: (tierListItems: TierListItems[]) => void;
   changeRowModalIndex: (index: number) => void;
   changeRowModalState: (trueOrfalse: boolean) => void;
 }
