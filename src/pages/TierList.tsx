@@ -227,10 +227,12 @@ const TierList = () => {
 
   const onDragEnterARow = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const updatedTierList = [...tierList];
+
     const enterRowIndex = Number(
       (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
     );
+    if (!enterRowIndex && enterRowIndex !== 0) return;
+    const updatedTierList = [...tierList];
 
     updatedTierList[enterRowIndex].tierListSelectedItems.push({
       src: dragEnterDataTransfer.src,
@@ -247,6 +249,7 @@ const TierList = () => {
   };
 
   const clearItemPreview = (rowIndex: number) => {
+    if (!rowIndex && rowIndex !== 0) return;
     const updatedTierList = [...tierList];
     updatedTierList[rowIndex].tierListSelectedItems = updatedTierList[
       rowIndex
@@ -288,19 +291,36 @@ const TierList = () => {
               onDragLeave={onDragLeaveARow}
               data-row-index={index}
             >
-              {row.tierListSelectedItems.map((tierListItem, index) => (
-                <img
-                  key={index}
-                  className="w-[140px] h-[120px] bg-green-400 cursor-pointer"
-                  draggable="true"
-                  onDragStart={dragStartHandle}
-                  data-tierlist-item-index={index}
-                  onDragOver={dragOverHandler}
-                  onDrop={onDropItemHandler}
-                  src={tierListItem.src}
-                  style={{ opacity: tierListItem?.opacity || "1" }}
-                />
-              ))}
+              {row.tierListSelectedItems.map((tierListItem, index) => {
+                if (tierListItem?.opacity) {
+                  return (
+                    <img
+                      key={index}
+                      className="w-[140px] h-[120px] bg-green-400 cursor-pointer pointer-events-none"
+                      // draggable="true"
+                      // onDragStart={dragStartHandle}
+                      // data-tierlist-item-index={index}
+                      // onDragOver={dragOverHandler}
+                      // onDrop={onDropItemHandler}
+                      src={tierListItem.src}
+                      style={{ opacity: tierListItem?.opacity }}
+                    />
+                  );
+                } else {
+                  return (
+                    <img
+                      key={index}
+                      className="w-[140px] h-[120px] bg-green-400 cursor-pointer"
+                      draggable="true"
+                      onDragStart={dragStartHandle}
+                      data-tierlist-item-index={index}
+                      onDragOver={dragOverHandler}
+                      onDrop={onDropItemHandler}
+                      src={tierListItem.src}
+                    />
+                  );
+                }
+              })}
             </div>
             <div className="flex items-center bg-black">
               <div className="flex items-center leading-[0] h-[120px] gap-2 text-5xl">
