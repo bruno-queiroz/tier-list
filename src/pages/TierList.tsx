@@ -131,7 +131,7 @@ const TierList = () => {
       );
       setTierListItems(updatedTierListItems);
     }
-
+    clearItemPreview(droppedRowIndex);
     updatedTierList[droppedRowIndex].tierListSelectedItems.push({
       src: imageSrc,
     });
@@ -240,12 +240,17 @@ const TierList = () => {
     setTierList(updatedTierList);
   };
   const onDragLeaveARow = (event: React.DragEvent<HTMLDivElement>) => {
-    const updatedTierList = [...tierList];
     const leaverRowIndex = Number(
       (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
     );
-    updatedTierList[leaverRowIndex].tierListSelectedItems.pop();
+    clearItemPreview(leaverRowIndex);
+  };
 
+  const clearItemPreview = (rowIndex: number) => {
+    const updatedTierList = [...tierList];
+    updatedTierList[rowIndex].tierListSelectedItems = updatedTierList[
+      rowIndex
+    ].tierListSelectedItems.filter((item) => !item?.opacity);
     setTierList(updatedTierList);
   };
   return (
