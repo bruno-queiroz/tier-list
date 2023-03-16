@@ -224,6 +224,30 @@ const TierList = () => {
     updatedTierList.splice(selectedItemIndex, 1, ...desirablePlaceItem);
     setTierList(updatedTierList);
   };
+
+  const onDragEnterARow = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const updatedTierList = [...tierList];
+    const enterRowIndex = Number(
+      (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
+    );
+
+    updatedTierList[enterRowIndex].tierListSelectedItems.push({
+      src: dragEnterDataTransfer.src,
+      opacity: "0.5",
+    });
+
+    setTierList(updatedTierList);
+  };
+  const onDragLeaveARow = (event: React.DragEvent<HTMLDivElement>) => {
+    const updatedTierList = [...tierList];
+    const leaverRowIndex = Number(
+      (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
+    );
+    updatedTierList[leaverRowIndex].tierListSelectedItems.pop();
+
+    setTierList(updatedTierList);
+  };
   return (
     <section className="flex flex-col gap-6 p-4">
       <h1 className="text-5xl font-bold text-center my-4">~ fix input bug</h1>
@@ -255,6 +279,8 @@ const TierList = () => {
               className="flex flex-wrap bg-[#1A1A17] flex-1"
               onDragOver={dragOverHandler}
               onDrop={onDropHandler}
+              onDragEnter={onDragEnterARow}
+              onDragLeave={onDragLeaveARow}
               data-row-index={index}
             >
               {row.tierListSelectedItems.map((tierListItem, index) => (
@@ -267,6 +293,7 @@ const TierList = () => {
                   onDragOver={dragOverHandler}
                   onDrop={onDropItemHandler}
                   src={tierListItem.src}
+                  style={{ opacity: tierListItem?.opacity || "1" }}
                 />
               ))}
             </div>
