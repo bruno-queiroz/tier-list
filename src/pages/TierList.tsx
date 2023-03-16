@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiFillSetting as SettingsIcon } from "react-icons/ai";
 import {
   MdOutlineKeyboardArrowDown as ArrowDownIcon,
@@ -9,10 +9,22 @@ import Modal from "../components/Modal";
 import ModalRowManipulation from "../components/ModalRowManipulation";
 import { useTierListStore } from "../zustandStore/store";
 
+export interface TierListItems {
+  src: string;
+  opacity?: string;
+}
+
 export interface TierList {
   color: string;
   text: string;
-  tierListSelectedItems: string[];
+  tierListSelectedItems: TierListItems[];
+}
+
+interface DragEnterDataTransfer {
+  src: string;
+  tierListItemIndex: string | undefined;
+  dragStartRowIndex: string | undefined;
+  opacity: string;
 }
 
 const TierList = () => {
@@ -27,6 +39,13 @@ const TierList = () => {
   const changeRowModalState = useTierListStore(
     (state) => state.changeRowModalState
   );
+  const [dragEnterDataTransfer, setDragEnterDataTransfer] =
+    useState<DragEnterDataTransfer>({
+      src: "",
+      tierListItemIndex: undefined,
+      dragStartRowIndex: undefined,
+      opacity: "0.5",
+    });
 
   const dragStartHandle = (event: React.DragEvent<HTMLImageElement>) => {
     const imageSrc = event.currentTarget.src;
@@ -39,6 +58,12 @@ const TierList = () => {
       "text/plain",
       `${tierListItemIndex}-${dragStartRowIndex}`
     );
+    setDragEnterDataTransfer({
+      src: imageSrc,
+      dragStartRowIndex,
+      tierListItemIndex,
+      opacity: "0.5",
+    });
   };
 
   const dragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
@@ -69,15 +94,15 @@ const TierList = () => {
         1
       );
     } else {
-      const tierListItemsClone = [...tierListItems];
-      const tierListItemSelectedIndex = tierListItemsClone.indexOf(imageSrc);
-      tierListItemsClone.splice(tierListItemSelectedIndex, 1);
-      setTierListItems(tierListItemsClone);
+      const updatedTierListItems = tierListItems.filter(
+        (item) => item.src !== imageSrc
+      );
+      setTierListItems(updatedTierListItems);
     }
     updatedTierList[droppedRowIndex].tierListSelectedItems.splice(
       itemDroppedIndex,
       0,
-      imageSrc
+      { src: imageSrc }
     );
 
     setTierList(updatedTierList);
@@ -85,7 +110,6 @@ const TierList = () => {
 
   const onDropHandler = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-
     const droppedRowIndex = Number(
       (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
     );
@@ -102,13 +126,15 @@ const TierList = () => {
         1
       );
     } else {
-      const tierListItemsClone = [...tierListItems];
-      const tierListItemSelectedIndex = tierListItemsClone.indexOf(imageSrc);
-      tierListItemsClone.splice(tierListItemSelectedIndex, 1);
-      setTierListItems(tierListItemsClone);
+      const updatedTierListItems = tierListItems.filter(
+        (item) => item.src !== imageSrc
+      );
+      setTierListItems(updatedTierListItems);
     }
 
-    updatedTierList[droppedRowIndex].tierListSelectedItems.push(imageSrc);
+    updatedTierList[droppedRowIndex].tierListSelectedItems.push({
+      src: imageSrc,
+    });
     setTierList(updatedTierList);
   };
 
@@ -118,16 +144,15 @@ const TierList = () => {
     event.preventDefault();
     event.stopPropagation();
 
-    const updatedTierListItems = [...tierListItems];
     const imageSrc = event.dataTransfer.getData("URL");
-    const itemSelectedIndex = tierListItems.indexOf(imageSrc);
     const itemDroppedIndex = Number(
       (event.nativeEvent.target as HTMLDivElement)?.dataset
         ?.itemNotSelectedIndex
     );
-
-    updatedTierListItems.splice(itemSelectedIndex, 1);
-    updatedTierListItems.splice(itemDroppedIndex, 0, imageSrc);
+    const updatedTierListItems = tierListItems.filter(
+      (item) => item.src !== imageSrc
+    );
+    updatedTierListItems.splice(itemDroppedIndex, 0, { src: imageSrc });
 
     setTierListItems(updatedTierListItems);
   };
@@ -151,7 +176,7 @@ const TierList = () => {
     );
 
     setTierList(updatedTierList);
-    setTierListItems([...tierListItems, imageSrc]);
+    setTierListItems([...tierListItems, { src: imageSrc }]);
   };
 
   const handleOpenModalRowManipulation = (selectedRowIndex: number) => {
@@ -241,7 +266,7 @@ const TierList = () => {
                   data-tierlist-item-index={index}
                   onDragOver={dragOverHandler}
                   onDrop={onDropItemHandler}
-                  src={tierListItem}
+                  src={tierListItem.src}
                 />
               ))}
             </div>
@@ -280,7 +305,7 @@ const TierList = () => {
             onDrop={onDropItemNotSelectedHandle}
             onDragOver={dragOverHandler}
             data-item-not-selected-index={index}
-            src={tierListItem}
+            src={tierListItem.src}
           />
         ))}
       </div>
