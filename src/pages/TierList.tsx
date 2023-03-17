@@ -48,6 +48,7 @@ const TierList = () => {
     });
 
   const dragStartHandle = (event: React.DragEvent<HTMLImageElement>) => {
+    const updatedTierList = [...tierList];
     const imageSrc = event.currentTarget.src;
     const tierListItemIndex = event.currentTarget.dataset?.tierlistItemIndex;
     const dragStartRowIndex = (event.target as HTMLDivElement).parentElement
@@ -64,6 +65,16 @@ const TierList = () => {
       tierListItemIndex,
       opacity: "0.5",
     });
+
+    if (!dragStartRowIndex) return;
+
+    setTimeout(() => {
+      updatedTierList[Number(dragStartRowIndex)].tierListSelectedItems.splice(
+        Number(tierListItemIndex),
+        1
+      );
+    }, 0);
+    setTierList(updatedTierList);
   };
 
   const dragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
@@ -82,23 +93,16 @@ const TierList = () => {
       (event.nativeEvent.target as HTMLDivElement)?.dataset?.tierlistItemIndex
     );
     const imageSrc = event.dataTransfer.getData("URL");
-    const isTierListItemSelected = event.dataTransfer.getData("text");
     const updatedTierList = [...tierList];
+    const wasItemNotSelected = event.dataTransfer.getData("text");
 
-    if (isTierListItemSelected !== "undefined-undefined") {
-      const [tierListItemIndex, dragStartRowIndex] =
-        isTierListItemSelected.split("-");
-
-      updatedTierList[Number(dragStartRowIndex)].tierListSelectedItems.splice(
-        Number(tierListItemIndex),
-        1
-      );
-    } else {
+    if (wasItemNotSelected === "undefined-undefined") {
       const updatedTierListItems = tierListItems.filter(
         (item) => item.src !== imageSrc
       );
       setTierListItems(updatedTierListItems);
     }
+
     updatedTierList[droppedRowIndex].tierListSelectedItems.splice(
       itemDroppedIndex,
       0,
@@ -114,24 +118,17 @@ const TierList = () => {
       (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
     );
     const imageSrc = event.dataTransfer.getData("URL");
-    const isTierListItemSelected = event.dataTransfer.getData("text");
     const updatedTierList = [...tierList];
-
-    if (isTierListItemSelected !== "undefined-undefined") {
-      const [tierListItemIndex, dragStartRowIndex] =
-        isTierListItemSelected.split("-");
-
-      updatedTierList[Number(dragStartRowIndex)].tierListSelectedItems.splice(
-        Number(tierListItemIndex),
-        1
-      );
-    } else {
+    const wasItemNotSelected = event.dataTransfer.getData("text");
+    if (wasItemNotSelected === "undefined-undefined") {
       const updatedTierListItems = tierListItems.filter(
         (item) => item.src !== imageSrc
       );
       setTierListItems(updatedTierListItems);
     }
+
     clearItemPreview(droppedRowIndex);
+
     updatedTierList[droppedRowIndex].tierListSelectedItems.push({
       src: imageSrc,
     });
