@@ -46,7 +46,7 @@ const TierList = () => {
       dragStartRowIndex: undefined,
       opacity: "0.5",
     });
-
+  const [dragEnterPreviewItemIndex, setDragEnterPreviewItemIndex] = useState(0);
   const dragStartHandle = (event: React.DragEvent<HTMLImageElement>) => {
     const updatedTierList = [...tierList];
     const imageSrc = event.currentTarget.src;
@@ -127,11 +127,27 @@ const TierList = () => {
       setTierListItems(updatedTierListItems);
     }
 
+    const lastItem = tierList[droppedRowIndex].tierListSelectedItems.length - 1;
+    const isPreviewAlreadyActive = tierList[
+      droppedRowIndex
+    ].tierListSelectedItems.some(
+      (item, index) => item?.opacity && index < lastItem
+    );
+    if (isPreviewAlreadyActive) {
+      updatedTierList[droppedRowIndex].tierListSelectedItems.splice(
+        dragEnterPreviewItemIndex,
+        0,
+        {
+          src: imageSrc,
+        }
+      );
+    } else {
+      updatedTierList[droppedRowIndex].tierListSelectedItems.push({
+        src: imageSrc,
+      });
+    }
     clearItemPreview(droppedRowIndex);
 
-    updatedTierList[droppedRowIndex].tierListSelectedItems.push({
-      src: imageSrc,
-    });
     setTierList(updatedTierList);
   };
 
@@ -230,7 +246,13 @@ const TierList = () => {
     );
     if (!enterRowIndex && enterRowIndex !== 0) return;
     const updatedTierList = [...tierList];
-
+    const lastItem = tierList[enterRowIndex].tierListSelectedItems.length - 1;
+    const isPreviewAlreadyActive = tierList[
+      enterRowIndex
+    ].tierListSelectedItems.some(
+      (item, index) => item?.opacity && index <= lastItem
+    );
+    if (isPreviewAlreadyActive) return;
     updatedTierList[enterRowIndex].tierListSelectedItems.push({
       src: dragEnterDataTransfer.src,
       opacity: "0.5",
@@ -239,20 +261,58 @@ const TierList = () => {
     setTierList(updatedTierList);
   };
   const onDragLeaveARow = (event: React.DragEvent<HTMLDivElement>) => {
-    const leaverRowIndex = Number(
+    const leaveRowIndex = Number(
       (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
     );
-    clearItemPreview(leaverRowIndex);
+
+    if (!leaveRowIndex && leaveRowIndex !== 0) return;
+
+    const lastItemIndex =
+      tierList[leaveRowIndex].tierListSelectedItems.length - 1;
+    const isLastItemAPreview =
+      tierList[leaveRowIndex].tierListSelectedItems[lastItemIndex]?.opacity;
+
+    if (!isLastItemAPreview) return;
+    clearItemPreview(leaveRowIndex);
   };
 
   const clearItemPreview = (rowIndex: number) => {
     if (!rowIndex && rowIndex !== 0) return;
+
     const updatedTierList = [...tierList];
     updatedTierList[rowIndex].tierListSelectedItems = updatedTierList[
       rowIndex
     ].tierListSelectedItems.filter((item) => !item?.opacity);
     setTierList(updatedTierList);
   };
+
+  const onDragOverSelectedItemPreview = (
+    event: React.DragEvent<HTMLDivElement>
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const updatedTierList = [...tierList];
+    const enterItemIndex = Number(
+      (event.nativeEvent.target as HTMLDivElement).dataset?.tierlistItemIndex
+    );
+    const enterItemRowIndex = Number(
+      (event.nativeEvent.target as HTMLDivElement)?.parentElement?.dataset
+        ?.rowIndex
+    );
+    setDragEnterPreviewItemIndex(enterItemIndex);
+    clearItemPreview(enterItemRowIndex);
+
+    updatedTierList[enterItemRowIndex].tierListSelectedItems.splice(
+      enterItemIndex,
+      0,
+      {
+        src: dragEnterDataTransfer.src,
+        opacity: "0.5",
+      }
+    );
+    setTierList(updatedTierList);
+  };
+
   return (
     <section className="flex flex-col gap-6 p-4">
       <h1 className="text-5xl font-bold text-center my-4">~ fix input bug</h1>
@@ -313,6 +373,7 @@ const TierList = () => {
                       data-tierlist-item-index={index}
                       onDragOver={dragOverHandler}
                       onDrop={onDropItemHandler}
+                      onDragEnter={onDragOverSelectedItemPreview}
                       src={tierListItem.src}
                     />
                   );
