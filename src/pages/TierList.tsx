@@ -146,7 +146,7 @@ const TierList = () => {
         src: imageSrc,
       });
     }
-    clearItemPreview(droppedRowIndex);
+    clearItemPreviewSpecificRow(droppedRowIndex);
 
     setTierList(updatedTierList);
   };
@@ -252,13 +252,18 @@ const TierList = () => {
     ].tierListSelectedItems.some(
       (item, index) => item?.opacity && index <= lastItem
     );
+
     if (isPreviewAlreadyActive) return;
-    updatedTierList[enterRowIndex].tierListSelectedItems.push({
+
+    const tierListItemPreviewsCleared =
+      clearItemPreviewAllRows(updatedTierList);
+
+    tierListItemPreviewsCleared[enterRowIndex].tierListSelectedItems.push({
       src: dragEnterDataTransfer.src,
       opacity: "0.5",
     });
 
-    setTierList(updatedTierList);
+    setTierList(tierListItemPreviewsCleared);
   };
   const onDragLeaveARow = (event: React.DragEvent<HTMLDivElement>) => {
     const leaveRowIndex = Number(
@@ -273,10 +278,10 @@ const TierList = () => {
       tierList[leaveRowIndex].tierListSelectedItems[lastItemIndex]?.opacity;
 
     if (!isLastItemAPreview) return;
-    clearItemPreview(leaveRowIndex);
+    clearItemPreviewSpecificRow(leaveRowIndex);
   };
 
-  const clearItemPreview = (rowIndex: number) => {
+  const clearItemPreviewSpecificRow = (rowIndex: number) => {
     if (!rowIndex && rowIndex !== 0) return;
 
     const updatedTierList = [...tierList];
@@ -286,6 +291,15 @@ const TierList = () => {
     setTierList(updatedTierList);
   };
 
+  const clearItemPreviewAllRows = (tierList: TierList[]) => {
+    const updatedTierList = [...tierList].map((row) => ({
+      ...row,
+      tierListSelectedItems: row.tierListSelectedItems.filter(
+        (item) => !item?.opacity
+      ),
+    }));
+    return updatedTierList;
+  };
   const onDragOverSelectedItemPreview = (
     event: React.DragEvent<HTMLDivElement>
   ) => {
@@ -300,7 +314,7 @@ const TierList = () => {
         ?.rowIndex
     );
     setDragEnterPreviewItemIndex(enterItemIndex);
-    clearItemPreview(enterItemRowIndex);
+    clearItemPreviewSpecificRow(enterItemRowIndex);
 
     updatedTierList[enterItemRowIndex].tierListSelectedItems.splice(
       enterItemIndex,
