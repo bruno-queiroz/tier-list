@@ -24,7 +24,6 @@ interface DragEnterDataTransfer {
   src: string;
   tierListItemIndex: string | undefined;
   dragStartRowIndex: string | undefined;
-  opacity: string;
 }
 
 const TierList = () => {
@@ -44,9 +43,12 @@ const TierList = () => {
       src: "",
       tierListItemIndex: undefined,
       dragStartRowIndex: undefined,
-      opacity: "0.5",
     });
   const [dragEnterPreviewItemIndex, setDragEnterPreviewItemIndex] = useState(0);
+  const [
+    dragEnterPreviewNotSelectedItemIndex,
+    setDragEnterPreviewNotSelectedItemIndex,
+  ] = useState(-1);
 
   const dragStartHandle = (event: React.DragEvent<HTMLImageElement>) => {
     const updatedTierList = [...tierList];
@@ -66,17 +68,16 @@ const TierList = () => {
       src: imageSrc,
       dragStartRowIndex,
       tierListItemIndex,
-      opacity: "0.5",
     });
 
     if (wasItemNotSelected) {
+      const updatedTierListItems = [...tierListItems];
+
       setTimeout(() => {
-        const updatedTierListItems = tierListItems.filter(
-          (_, index) => index !== Number(wasItemNotSelected)
-        );
-        setTierListItems(updatedTierListItems);
+        updatedTierListItems.splice(Number(wasItemNotSelected), 1);
       }, 0);
 
+      setTierListItems(updatedTierListItems);
       return;
     }
 
@@ -132,6 +133,7 @@ const TierList = () => {
     const imageSrc = event.dataTransfer.getData("URL");
     const updatedTierList = [...tierList];
     const wasItemNotSelected = event.dataTransfer.getData("text");
+
     if (wasItemNotSelected.includes("undefined")) {
       const updatedTierListItems = tierListItems.filter(
         (item) => item.src !== imageSrc
@@ -168,7 +170,6 @@ const TierList = () => {
   ) => {
     event.preventDefault();
     event.stopPropagation();
-
     const imageSrc = event.dataTransfer.getData("URL");
     const itemDroppedIndex = Number(
       (event.nativeEvent.target as HTMLDivElement)?.dataset
@@ -186,15 +187,27 @@ const TierList = () => {
     event: React.DragEvent<HTMLDivElement>
   ) => {
     event.preventDefault();
-    const isTierListItemSelected = event.dataTransfer.getData("text");
+    event.preventDefault();
 
-    if (isTierListItemSelected === "undefined-undefined") return;
+    const lastItemIndex = tierListItems.length - 1;
+    const isLastItemAPreview = tierListItems[lastItemIndex]?.opacity;
 
     const imageSrc = event.dataTransfer.getData("URL");
+
     const tierListItemsPreviewCleared =
       clearItemPreviewNotSelected(tierListItems);
 
-    setTierListItems([...tierListItemsPreviewCleared, { src: imageSrc }]);
+    if (isLastItemAPreview) {
+      setTierListItems([...tierListItemsPreviewCleared, { src: imageSrc }]);
+    } else {
+      tierListItemsPreviewCleared.splice(
+        dragEnterPreviewNotSelectedItemIndex,
+        0,
+        { src: imageSrc }
+      );
+
+      setTierListItems(tierListItemsPreviewCleared);
+    }
   };
 
   const handleOpenModalRowManipulation = (selectedRowIndex: number) => {
@@ -311,7 +324,7 @@ const TierList = () => {
     );
     return updatedTierListItems;
   };
-  const onDragOverSelectedItemPreview = (
+  const onDragEnterSelectedItemPreview = (
     event: React.DragEvent<HTMLDivElement>
   ) => {
     event.preventDefault();
@@ -346,6 +359,31 @@ const TierList = () => {
     if (isItemPreviewAlreadyAdded) return;
     const imageSrc = dragEnterDataTransfer.src;
     setTierListItems([...tierListItems, { src: imageSrc, opacity: "0.5" }]);
+  };
+
+  const onDragEnterNotSelectedItem = (
+    event: React.DragEvent<HTMLDivElement>
+  ) => {
+    event.stopPropagation();
+
+    const imageSrc = dragEnterDataTransfer.src;
+    const tierListItemNotSelectedIndex = (
+      event.nativeEvent.target as HTMLDivElement
+    ).dataset?.itemNotSelectedIndex;
+
+    if (!tierListItemNotSelectedIndex) return;
+    setDragEnterPreviewNotSelectedItemIndex(
+      Number(tierListItemNotSelectedIndex)
+    );
+
+    const updatedTierListItems = clearItemPreviewNotSelected(tierListItems);
+
+    updatedTierListItems.splice(Number(tierListItemNotSelectedIndex), 0, {
+      src: imageSrc,
+      opacity: "0.5",
+    });
+
+    setTierListItems(updatedTierListItems);
   };
 
   return (
@@ -403,7 +441,7 @@ const TierList = () => {
                       data-tierlist-item-index={index}
                       onDragOver={dragOverHandler}
                       onDrop={onDropItemHandler}
-                      onDragEnter={onDragOverSelectedItemPreview}
+                      onDragEnter={onDragEnterSelectedItemPreview}
                       src={tierListItem.src}
                     />
                   );
@@ -457,7 +495,7 @@ const TierList = () => {
                 data-item-not-selected-index={index}
                 onDragOver={dragOverHandler}
                 onDrop={onDropItemNotSelectedHandle}
-                // onDragEnter={onDragOverSelectedItemPreview}
+                onDragEnter={onDragEnterNotSelectedItem}
                 src={tierListItem.src}
               />
             );
