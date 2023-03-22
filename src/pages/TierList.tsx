@@ -141,13 +141,16 @@ const TierList = () => {
       setTierListItems(updatedTierListItems);
     }
 
-    const lastItem = tierList[droppedRowIndex].tierListSelectedItems.length - 1;
-    const isPreviewAlreadyActive = tierList[
-      droppedRowIndex
-    ].tierListSelectedItems.some(
-      (item, index) => item?.opacity && index < lastItem
-    );
-    if (isPreviewAlreadyActive) {
+    const lastItemIndex =
+      tierList[droppedRowIndex].tierListSelectedItems.length - 1;
+    const isLastitemAPreview =
+      tierList[droppedRowIndex].tierListSelectedItems[lastItemIndex]?.opacity;
+
+    if (isLastitemAPreview) {
+      updatedTierList[droppedRowIndex].tierListSelectedItems.push({
+        src: imageSrc,
+      });
+    } else {
       updatedTierList[droppedRowIndex].tierListSelectedItems.splice(
         dragEnterPreviewItemIndex,
         0,
@@ -155,10 +158,6 @@ const TierList = () => {
           src: imageSrc,
         }
       );
-    } else {
-      updatedTierList[droppedRowIndex].tierListSelectedItems.push({
-        src: imageSrc,
-      });
     }
     clearItemPreviewSpecificRow(droppedRowIndex);
 
