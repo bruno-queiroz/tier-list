@@ -104,6 +104,7 @@ const TierList = () => {
   const onDropItemHandler = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
+
     const droppedRowIndex = Number(
       (event.nativeEvent.target as HTMLDivElement)?.parentElement?.dataset
         ?.rowIndex
@@ -327,7 +328,7 @@ const TierList = () => {
     }));
     return updatedTierList;
   };
-  const clearItemPreviewNotSelected = (tierListItems: TierListItems[]) => {
+  const clearItemPreviewNotSelected = (tierListItems: TierListItem[]) => {
     const updatedTierListItems = [...tierListItems].filter(
       (item) => !item?.opacity
     );
@@ -407,8 +408,47 @@ const TierList = () => {
     setTierListItems(updatedTierListItems);
   };
 
+  const retrieveItemWhenDroppingOnWrongArea = (
+    event: React.DragEvent<HTMLDivElement>
+  ) => {
+    event.preventDefault();
+
+    const isElementAbleToDrop =
+      (event.nativeEvent.target as HTMLDivElement).id === "ableToDrop";
+
+    if (!isElementAbleToDrop) {
+      const imageSrc = dragEnterDataTransfer.src;
+
+      if (dragEnterDataTransfer.isItemSelected) {
+        const updatedTierList = clearItemPreviewAllRows(tierList);
+
+        const rowIndex = Number(dragEnterDataTransfer.dragStartRowIndex);
+        const itemIndex = Number(dragEnterDataTransfer.tierListItemIndex);
+
+        updatedTierList[rowIndex].tierListSelectedItems.splice(itemIndex, 0, {
+          src: imageSrc,
+        });
+
+        setTierList(updatedTierList);
+      } else {
+        const itemNotSelectedIndex = Number(
+          dragEnterDataTransfer.tierListNotSelectedItemIndex
+        );
+
+        const updatedTierListItems = clearItemPreviewNotSelected(tierListItems);
+        updatedTierListItems.splice(itemNotSelectedIndex, 0, { src: imageSrc });
+
+        setTierListItems(updatedTierListItems);
+      }
+    }
+  };
+
   return (
-    <section className="flex flex-col gap-6 p-4">
+    <section
+      className="flex flex-col gap-6 p-4"
+      onDrop={retrieveItemWhenDroppingOnWrongArea}
+      onDragOver={dragOverHandler}
+    >
       <h1 className="text-5xl font-bold text-center my-4">~ fix input bug</h1>
       {isRowModalOpen && (
         <Modal>
@@ -441,6 +481,7 @@ const TierList = () => {
               onDragEnter={onDragEnterARow}
               onDragLeave={onDragLeaveARow}
               data-row-index={index}
+              id="ableToDrop"
             >
               {row.tierListSelectedItems.map((tierListItem, index) => {
                 if (tierListItem?.opacity) {
@@ -464,6 +505,7 @@ const TierList = () => {
                       onDrop={onDropItemHandler}
                       onDragEnter={onDragEnterSelectedItemPreview}
                       src={tierListItem.src}
+                      id="ableToDrop"
                     />
                   );
                 }
@@ -495,6 +537,7 @@ const TierList = () => {
         onDrop={onDropItemsNotSelectedHandle}
         onDragOver={dragOverHandler}
         onDragEnter={onDragEnterNotSelectedArea}
+        id="ableToDrop"
       >
         {tierListItems.map((tierListItem, index) => {
           if (tierListItem?.opacity) {
@@ -518,6 +561,7 @@ const TierList = () => {
                 onDrop={onDropItemNotSelectedHandle}
                 onDragEnter={onDragEnterNotSelectedItem}
                 src={tierListItem.src}
+                id="ableToDrop"
               />
             );
           }
