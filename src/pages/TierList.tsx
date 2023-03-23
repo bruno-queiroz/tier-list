@@ -72,6 +72,8 @@ const TierList = () => {
       src: imageSrc,
       dragStartRowIndex,
       tierListItemIndex,
+      isItemSelected: dragStartRowIndex ? true : false,
+      tierListNotSelectedItemIndex: wasItemNotSelected,
     });
 
     if (wasItemNotSelected) {
