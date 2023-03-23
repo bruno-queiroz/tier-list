@@ -45,6 +45,8 @@ const TierList = () => {
       src: "",
       tierListItemIndex: undefined,
       dragStartRowIndex: undefined,
+      isItemSelected: false,
+      tierListNotSelectedItemIndex: undefined,
     });
   const [dragEnterPreviewItemIndex, setDragEnterPreviewItemIndex] = useState(0);
   const [
