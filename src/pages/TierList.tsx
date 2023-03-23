@@ -24,6 +24,8 @@ interface DragEnterDataTransfer {
   src: string;
   tierListItemIndex: string | undefined;
   dragStartRowIndex: string | undefined;
+  isItemSelected: boolean;
+  tierListNotSelectedItemIndex: string | undefined;
 }
 
 const TierList = () => {
