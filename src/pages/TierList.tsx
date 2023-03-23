@@ -9,7 +9,7 @@ import Modal from "../components/Modal";
 import ModalRowManipulation from "../components/ModalRowManipulation";
 import { useTierListStore } from "../zustandStore/store";
 
-export interface TierListItems {
+export interface TierListItem {
   src: string;
   opacity?: string;
 }
@@ -17,7 +17,7 @@ export interface TierListItems {
 export interface TierList {
   color: string;
   text: string;
-  tierListSelectedItems: TierListItems[];
+  tierListSelectedItems: TierListItem[];
 }
 
 interface DragEnterDataTransfer {
