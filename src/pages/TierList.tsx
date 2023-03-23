@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { AiFillSetting as SettingsIcon } from "react-icons/ai";
 import {
   MdOutlineKeyboardArrowDown as ArrowDownIcon,
@@ -442,14 +442,14 @@ const TierList = () => {
       }
     }
   };
-
+  const test = useRef<HTMLDivElement>(null);
   return (
     <section
       className="flex flex-col gap-6 p-4"
       onDrop={retrieveItemWhenDroppingOnWrongArea}
       onDragOver={dragOverHandler}
     >
-      <h1 className="text-5xl font-bold text-center my-4">~ fix input bug</h1>
+      <h1 className="text-5xl font-bold text-center my-4">~ TierList</h1>
       {isRowModalOpen && (
         <Modal>
           <ModalRowManipulation />
@@ -463,13 +463,18 @@ const TierList = () => {
               className="grid place-content-center relative"
               style={{ backgroundColor: row.color }}
             >
-              <div className="text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center pointer-events-none bg-transparent absolute">
+              <div
+                className="text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center"
+                ref={test}
+              >
                 {row.text}
               </div>
               <div
-                className={`text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center `}
+                className={`text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center absolute inset-0`}
                 contentEditable
-                style={{ color: row.color }}
+                style={{
+                  color: "transparent",
+                }}
                 onInput={(e) => updateItemText(e, index)}
               ></div>
             </div>
