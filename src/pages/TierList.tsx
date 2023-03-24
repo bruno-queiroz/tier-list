@@ -1,3 +1,4 @@
+import html2canvas from "html2canvas";
 import React, { useRef, useState } from "react";
 import { AiFillSetting as SettingsIcon } from "react-icons/ai";
 import {
@@ -31,6 +32,9 @@ interface DragEnterDataTransfer {
 const TierList = () => {
   const tierList = useTierListStore((state) => state.tierList);
   const setTierList = useTierListStore((state) => state.setTierList);
+  const setTierListCanvas = useTierListStore(
+    (state) => state.setTierListCanvas
+  );
   const tierListItems = useTierListStore((state) => state.tierListItems);
   const setTierListItems = useTierListStore((state) => state.setTierListItems);
   const isRowModalOpen = useTierListStore((state) => state.isRowModalOpen);
@@ -48,6 +52,7 @@ const TierList = () => {
       isItemSelected: false,
       tierListNotSelectedItemIndex: undefined,
     });
+  const tierListRef = useRef<HTMLDivElement>(null);
   const [dragEnterPreviewItemIndex, setDragEnterPreviewItemIndex] = useState(0);
   const [
     dragEnterPreviewNotSelectedItemIndex,
@@ -442,7 +447,11 @@ const TierList = () => {
       }
     }
   };
-  const test = useRef<HTMLDivElement>(null);
+  const downloadTierlist = async () => {
+    changeDownloadModalState(true);
+    const canvas = await html2canvas(tierListRef.current as HTMLElement);
+    setTierListCanvas(canvas);
+  };
   return (
     <section
       className="flex flex-col gap-6 p-4"
@@ -456,17 +465,14 @@ const TierList = () => {
         </Modal>
       )}
 
-      <div className="flex flex-col">
+      <div className="flex flex-col" ref={tierListRef}>
         {tierList.map((row, index) => (
           <div className="flex border-b-[3px] border-black" key={index}>
             <div
               className="grid place-content-center relative"
               style={{ backgroundColor: row.color }}
             >
-              <div
-                className="text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center"
-                ref={test}
-              >
+              <div className="text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center">
                 {row.text}
               </div>
               <div
