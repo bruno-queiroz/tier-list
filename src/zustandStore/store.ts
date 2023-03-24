@@ -8,11 +8,13 @@ interface TierListState {
   isRowModalOpen: boolean;
   isDownloadModalOpen: boolean;
   rowModalIndex: number;
+  tierListCanvas: HTMLCanvasElement | null;
   setTierList: (tierList: TierList[]) => void;
   setTierListItems: (tierListItems: TierListItem[]) => void;
   changeRowModalIndex: (index: number) => void;
   changeRowModalState: (trueOrfalse: boolean) => void;
   changeDownloadModalState: (trueOrfalse: boolean) => void;
+  setTierListCanvas: (canvas: HTMLCanvasElement) => void;
 }
 
 export const useTierListStore = create<TierListState>()((set) => ({
@@ -21,6 +23,7 @@ export const useTierListStore = create<TierListState>()((set) => ({
   isRowModalOpen: false,
   isDownloadModalOpen: false,
   rowModalIndex: 0,
+  tierListCanvas: null,
   setTierList: (tierList) => set((state) => ({ tierList })),
   setTierListItems: (tierListItems) => set((state) => ({ tierListItems })),
   changeRowModalIndex: (index) => set((state) => ({ rowModalIndex: index })),
@@ -28,4 +31,6 @@ export const useTierListStore = create<TierListState>()((set) => ({
     set((state) => ({ isRowModalOpen: trueOrfalse })),
   changeDownloadModalState: (trueOrfalse) =>
     set((state) => ({ isDownloadModalOpen: trueOrfalse })),
+  setTierListCanvas: (canvas: HTMLCanvasElement) =>
+    set((state) => ({ tierListCanvas: canvas })),
 }));
