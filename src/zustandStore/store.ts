@@ -6,21 +6,26 @@ interface TierListState {
   tierList: TierList[];
   tierListItems: TierListItem[];
   isRowModalOpen: boolean;
+  isDownloadModalOpen: boolean;
   rowModalIndex: number;
   setTierList: (tierList: TierList[]) => void;
   setTierListItems: (tierListItems: TierListItem[]) => void;
   changeRowModalIndex: (index: number) => void;
   changeRowModalState: (trueOrfalse: boolean) => void;
+  changeDownloadModalState: (trueOrfalse: boolean) => void;
 }
 
 export const useTierListStore = create<TierListState>()((set) => ({
   tierList: mockData,
   tierListItems: imagesTest,
   isRowModalOpen: false,
+  isDownloadModalOpen: false,
   rowModalIndex: 0,
   setTierList: (tierList) => set((state) => ({ tierList })),
   setTierListItems: (tierListItems) => set((state) => ({ tierListItems })),
   changeRowModalIndex: (index) => set((state) => ({ rowModalIndex: index })),
   changeRowModalState: (trueOrfalse) =>
     set((state) => ({ isRowModalOpen: trueOrfalse })),
+  changeDownloadModalState: (trueOrfalse) =>
+    set((state) => ({ isDownloadModalOpen: trueOrfalse })),
 }));
