@@ -7,6 +7,7 @@ import {
 } from "react-icons/md";
 
 import Modal from "../components/Modal";
+import ModalDownload from "../components/ModalDownload";
 import ModalRowManipulation from "../components/ModalRowManipulation";
 import { useTierListStore } from "../zustandStore/store";
 
@@ -38,6 +39,12 @@ const TierList = () => {
   const tierListItems = useTierListStore((state) => state.tierListItems);
   const setTierListItems = useTierListStore((state) => state.setTierListItems);
   const isRowModalOpen = useTierListStore((state) => state.isRowModalOpen);
+  const isDownloadModalOpen = useTierListStore(
+    (state) => state.isDownloadModalOpen
+  );
+  const changeDownloadModalState = useTierListStore(
+    (state) => state.changeDownloadModalState
+  );
   const changeRowModalIndex = useTierListStore(
     (state) => state.changeRowModalIndex
   );
@@ -579,9 +586,18 @@ const TierList = () => {
         })}
       </div>
 
-      <button className="py-2 px-6 rounded bg-S w-[max-content] mx-auto my-4">
+      <button
+        className="py-2 px-6 rounded bg-S w-[max-content] mx-auto my-4"
+        onClick={downloadTierlist}
+      >
         Download
       </button>
+
+      {isDownloadModalOpen && (
+        <Modal>
+          <ModalDownload />
+        </Modal>
+      )}
     </section>
   );
 };
