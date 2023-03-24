@@ -1,6 +1,6 @@
-import { TierList } from "../pages/CreateTierList";
+import { TierListFormData } from "../pages/CreateTierList";
 
-export const postTierList = async (tierList: TierList) => {
+export const postTierList = async (tierList: TierListFormData) => {
   const response = await fetch("http://localhost:3000/create-tier-list", {
     method: "POST",
     headers: {
