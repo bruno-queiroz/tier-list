@@ -26,6 +26,9 @@ const CreateTierList = () => {
   );
   const nameInputRef = useRef<HTMLInputElement>(null);
 
+  const tierListImage = useRef<HTMLInputElement>(null);
+  const tierListItemsImages = useRef<HTMLInputElement>(null);
+
   const SInputRef = useRef<HTMLInputElement>(null);
   const AInputRef = useRef<HTMLInputElement>(null);
   const BInputRef = useRef<HTMLInputElement>(null);
@@ -34,18 +37,53 @@ const CreateTierList = () => {
 
   const handleTierListSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const tierListFormData = {
-      name: nameInputRef.current?.value || "",
-      tierListImage: tierListImagePreview,
-      tierListItems: tierListItemsPreview,
-      tiers: [
-        SInputRef.current?.value || "S",
-        AInputRef.current?.value || "A",
-        BInputRef.current?.value || "B",
-        CInputRef.current?.value || "C",
-        DInputRef.current?.value || "D",
-      ],
-    };
+    const tierListFormData = new FormData();
+    const tierListItemsArray = tierListItemsImages.current?.files;
+
+    if (tierListItemsArray) {
+      for (const tierListItem of tierListItemsArray) {
+        tierListFormData.append("tierListItems", tierListItem);
+      }
+    }
+
+    tierListFormData.append(
+      "tierListImage",
+      tierListImage.current?.files?.[0] || ""
+    );
+
+    const emptyTierList = [
+      {
+        color: "#FF7F7F",
+        text: SInputRef.current?.value || "S",
+        tierListSelectedItems: [],
+      },
+      {
+        color: "#FFBF7F",
+        text: AInputRef.current?.value || "A",
+
+        tierListSelectedItems: [],
+      },
+      {
+        color: "#FFDF7F",
+        text: BInputRef.current?.value || "B",
+
+        tierListSelectedItems: [],
+      },
+      {
+        color: "#FFFF7F",
+        text: CInputRef.current?.value || "C",
+
+        tierListSelectedItems: [],
+      },
+      {
+        color: "#BFFF7F",
+        text: DInputRef.current?.value || "D",
+        tierListSelectedItems: [],
+      },
+    ];
+
+    tierListFormData.append("tierListName", nameInputRef.current?.value || "");
+    tierListFormData.append("tierList", JSON.stringify(emptyTierList));
 
     postTierList(tierListFormData);
   };
@@ -105,6 +143,8 @@ const CreateTierList = () => {
               type="file"
               accept="image/png, image/jpeg, image/jpe"
               className="sr-only"
+              ref={tierListImage}
+              name="tierListImage"
               onChange={handleTierListPreviewImg}
               required
             />
@@ -127,6 +167,8 @@ const CreateTierList = () => {
               type="file"
               accept="image/png, image/jpeg"
               className="sr-only"
+              name="tierListItems"
+              ref={tierListItemsImages}
               multiple
               required
               onChange={handleTierListItemsPreview}
