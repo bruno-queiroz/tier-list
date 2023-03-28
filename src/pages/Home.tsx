@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TierListCard from "../components/TierListCard";
+import { getTierLists, TierList } from "../fetch/getTierLists";
 
 const Home = () => {
+  const [tierLists, setTierLists] = useState<TierList[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      setTierLists(await getTierLists());
+    })();
+  }, []);
+
   return (
     <main className="flex flex-col items-center gap-8 p-4">
       <h1 className="text-5xl font-bold text-center mt-4">Your Tier Lists</h1>
@@ -13,14 +22,9 @@ const Home = () => {
         Create Tier List
       </Link>
       <div className="flex gap-4 flex-wrap justify-center">
-        <TierListCard />
-        <TierListCard />
-        <TierListCard />
-        <TierListCard />
-        <TierListCard />
-        <TierListCard />
-        <TierListCard />
-        <TierListCard />
+        {tierLists?.map((tierList, index) => (
+          <TierListCard key={index} {...tierList} />
+        ))}
       </div>
     </main>
   );
