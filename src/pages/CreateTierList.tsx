@@ -4,10 +4,10 @@ import { BiImageAdd as ImageIcon } from "react-icons/bi";
 import { postTierList } from "../fetch/postTierList";
 
 export interface TierListFormData {
-  name: string;
+  tierListName: string;
   tierListImage: string;
   tierListItems: string[];
-  tiers: string[];
+  tierList: string[];
 }
 
 const readAsDataURLAsync = (tierListItem: File) =>
