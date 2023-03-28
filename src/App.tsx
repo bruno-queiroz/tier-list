@@ -13,7 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create-tier-list" element={<CreateTierList />} />
-        <Route path="/tier-list" element={<TierList />} />
+        <Route path="/tier-list/:tierListID" element={<TierList />} />
       </Routes>
     </>
   );
