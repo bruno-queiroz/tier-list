@@ -1,13 +1,19 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { TierList } from "../fetch/getTierLists";
 
-const TierListCard = () => {
+const TierListCard = ({ tierListName, tierListImage, _id }: TierList) => {
   return (
-    <a href="">
+    <Link to={`tierList/${tierListName}/${_id}`}>
       <article className="flex flex-col gap-4 bg-gray-800 p-3 rounded">
-        <img src="" alt="" className="w-[200px] h-[150px] bg-blue-500" />
-        <span>tierlist name</span>
+        <img
+          src={tierListImage}
+          alt=""
+          className="w-[200px] h-[150px] bg-transparent object-cover"
+        />
+        <span>{tierListName}</span>
       </article>
-    </a>
+    </Link>
   );
 };
 
