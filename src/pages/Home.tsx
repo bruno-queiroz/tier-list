@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TierListCard from "../components/TierListCard";
-import { getTierLists, TierList } from "../fetch/getTierLists";
+import { getTierLists, TierListResponse } from "../fetch/getTierLists";
 
 const Home = () => {
-  const [tierLists, setTierLists] = useState<TierList[]>([]);
+  const [tierLists, setTierLists] = useState<TierListResponse[]>([]);
 
   useEffect(() => {
     (async () => {

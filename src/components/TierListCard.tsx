@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { TierList } from "../fetch/getTierLists";
+import { TierListResponse } from "../fetch/getTierLists";
 
-const TierListCard = ({ tierListName, tierListImage, _id }: TierList) => {
+const TierListCard = ({
+  tierListName,
+  tierListImage,
+  _id,
+}: TierListResponse) => {
   return (
     <Link to={`tier-list/${_id}`}>
       <article className="flex flex-col gap-4 bg-gray-800 p-3 rounded">
