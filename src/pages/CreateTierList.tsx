@@ -2,12 +2,13 @@ import React, { useRef, useState } from "react";
 
 import { BiImageAdd as ImageIcon } from "react-icons/bi";
 import { postTierList } from "../fetch/postTierList";
+import { TierListItem } from "./TierList";
 
 export interface TierListFormData {
   tierListName: string;
   tierListImage: string;
-  tierListItems: string[];
-  tierList: string[];
+  tierListItems: TierListItem[];
+  tierList: string;
 }
 
 const readAsDataURLAsync = (tierListItem: File) =>
