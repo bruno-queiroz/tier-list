@@ -10,6 +10,7 @@ import { useParams } from "react-router";
 import Modal from "../components/Modal";
 import ModalDownload from "../components/ModalDownload";
 import ModalRowManipulation from "../components/ModalRowManipulation";
+import TierName from "../components/TierName";
 import { getTierList } from "../fetch/getTierList";
 import { patchTierList } from "../fetch/patchTierList";
 import { patchTierListItems } from "../fetch/patchTierListItems";
@@ -257,15 +258,7 @@ const TierList = () => {
     changeRowModalIndex(selectedRowIndex);
   };
 
-  const updateItemText = (
-    event: React.FormEvent<HTMLDivElement>,
-    rowIndex: number
-  ) => {
-    const updatedTierList = [...tierList];
-    updatedTierList[rowIndex].text = event.currentTarget.textContent || "";
-    patchTierList(tierListID!, updatedTierList);
-    setTierList(updatedTierList);
-  };
+  
   const moveItemUp = (selectedItemIndex: number) => {
     if (selectedItemIndex === 0) return;
     const updatedTierList = [...tierList];
@@ -500,22 +493,7 @@ const TierList = () => {
       <div className="flex flex-col" ref={tierListRef}>
         {tierList.map((row, index) => (
           <div className="flex border-b-[3px] border-black" key={index}>
-            <div
-              className="grid place-content-center relative"
-              style={{ backgroundColor: row.color }}
-            >
-              <div className="text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center">
-                {row.text}
-              </div>
-              <div
-                className={`text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center absolute inset-0`}
-                contentEditable
-                style={{
-                  color: "transparent",
-                }}
-                onInput={(e) => updateItemText(e, index)}
-              ></div>
-            </div>
+            <TierName {...row} index={index}/>
 
             <div
               className="flex flex-wrap bg-[#1A1A17] flex-1"
