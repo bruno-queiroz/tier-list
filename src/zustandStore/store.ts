@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { imagesTest, mockData } from "../../public/mockData";
 import { TierList, TierListItem } from "../pages/TierList";
 
 interface TierListState {
@@ -18,8 +17,8 @@ interface TierListState {
 }
 
 export const useTierListStore = create<TierListState>()((set) => ({
-  tierList: mockData,
-  tierListItems: imagesTest,
+  tierList: [],
+  tierListItems: [],
   isRowModalOpen: false,
   isDownloadModalOpen: false,
   rowModalIndex: 0,
