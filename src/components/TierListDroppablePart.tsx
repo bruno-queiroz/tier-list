@@ -8,6 +8,7 @@ import { clearItemPreviewNotSelected } from "../utils/clearItemPreviewNotSelecte
 import { clearItemPreviewSpecificRow } from "../utils/clearItemPreviewSpecificRow";
 import { dragOverHandler } from "../utils/dragOverHandler";
 import { useTierListStore } from "../zustandStore/store";
+import TierListPreviewItem from "./TierListPreviewItem";
 type TierListDroppablePartProps = TierList & { index: number };
 
 const TierListDroppablePart = ({
@@ -246,14 +247,7 @@ const TierListDroppablePart = ({
     >
       {tierListSelectedItems.map((tierListItem, index) => {
         if (tierListItem?.opacity) {
-          return (
-            <img
-              key={index}
-              className="w-[140px] h-[120px] cursor-pointer pointer-events-none"
-              src={tierListItem.src}
-              style={{ opacity: tierListItem?.opacity }}
-            />
-          );
+          return <TierListPreviewItem key={index} {...tierListItem} />;
         } else {
           return (
             <img
