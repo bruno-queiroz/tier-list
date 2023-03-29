@@ -133,6 +133,7 @@ const ModalRowManipulation = () => {
     const updatedTierList = [...tierList];
     updatedTierList[rowModalIndex].text = event.target.value;
 
+    patchTierList(tierListID!, updatedTierList);
     setTextAreaValue(event.target.value);
     setTierList(updatedTierList);
   };
