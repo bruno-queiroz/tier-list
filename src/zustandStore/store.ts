@@ -9,6 +9,7 @@ interface TierListState {
   tierList: TierList[];
   tierListItems: TierListItem[];
   dragEnterDataTransfer: DragEnterDataTransfer;
+  dragEnterPreviewItemIndex: number;
   isRowModalOpen: boolean;
   isDownloadModalOpen: boolean;
   rowModalIndex: number;
@@ -16,6 +17,7 @@ interface TierListState {
   setTierList: (tierList: TierList[]) => void;
   setTierListItems: (tierListItems: TierListItem[]) => void;
   setDragEnterDataTransfer: (data: DragEnterDataTransfer) => void;
+  setDragEnterPreviewItemIndex: (index: number) => void;
   changeRowModalIndex: (index: number) => void;
   changeRowModalState: (trueOrfalse: boolean) => void;
   changeDownloadModalState: (trueOrfalse: boolean) => void;
@@ -32,6 +34,7 @@ export const useTierListStore = create<TierListState>()((set) => ({
     isItemSelected: false,
     tierListNotSelectedItemIndex: undefined,
   },
+  dragEnterPreviewItemIndex: 0,
   isRowModalOpen: false,
   isDownloadModalOpen: false,
   rowModalIndex: 0,
@@ -40,6 +43,8 @@ export const useTierListStore = create<TierListState>()((set) => ({
   setTierListItems: (tierListItems) => set((state) => ({ tierListItems })),
   setDragEnterDataTransfer: (data) =>
     set((state) => ({ dragEnterDataTransfer: data })),
+  setDragEnterPreviewItemIndex: (index) =>
+    set((state) => ({ dragEnterPreviewItemIndex: index })),
   changeRowModalIndex: (index) => set((state) => ({ rowModalIndex: index })),
   changeRowModalState: (trueOrfalse) =>
     set((state) => ({ isRowModalOpen: trueOrfalse })),
