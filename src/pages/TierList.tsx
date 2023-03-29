@@ -10,6 +10,9 @@ import { useParams } from "react-router";
 import Modal from "../components/Modal";
 import ModalDownload from "../components/ModalDownload";
 import ModalRowManipulation from "../components/ModalRowManipulation";
+import { getTierList } from "../fetch/getTierList";
+import { patchTierList } from "../fetch/patchTierList";
+import { patchTierListItems } from "../fetch/patchTierListItems";
 import { useTierListStore } from "../zustandStore/store";
 
 export interface TierListItem {
@@ -143,6 +146,7 @@ const TierList = () => {
       const updatedTierListItems = tierListItems.filter(
         (item) => item.src !== imageSrc
       );
+      patchTierListItems(tierListID!, updatedTierListItems);
       setTierListItems(updatedTierListItems);
     }
 
@@ -151,7 +155,7 @@ const TierList = () => {
       0,
       { src: imageSrc }
     );
-
+    patchTierList(tierListID!, updatedTierList);
     setTierList(updatedTierList);
   };
 
@@ -168,6 +172,7 @@ const TierList = () => {
       const updatedTierListItems = tierListItems.filter(
         (item) => item.src !== imageSrc
       );
+      patchTierListItems(tierListID!, updatedTierListItems);
       setTierListItems(updatedTierListItems);
     }
 
@@ -191,6 +196,8 @@ const TierList = () => {
     }
     clearItemPreviewSpecificRow(droppedRowIndex);
 
+    patchTierList(tierListID!, updatedTierList);
+
     setTierList(updatedTierList);
   };
 
@@ -208,7 +215,7 @@ const TierList = () => {
       (item) => item.src !== imageSrc
     );
     updatedTierListItems.splice(itemDroppedIndex, 0, { src: imageSrc });
-
+    patchTierListItems(tierListID!, updatedTierListItems);
     setTierListItems(updatedTierListItems);
   };
 
@@ -225,16 +232,22 @@ const TierList = () => {
 
     const tierListItemsPreviewCleared =
       clearItemPreviewNotSelected(tierListItems);
-
     if (isLastItemAPreview) {
-      setTierListItems([...tierListItemsPreviewCleared, { src: imageSrc }]);
+      const updatedTierListItems = [
+        ...tierListItemsPreviewCleared,
+        { src: imageSrc },
+      ];
+      patchTierListItems(tierListID!, updatedTierListItems);
+      patchTierList(tierListID!, tierList);
+      setTierListItems(updatedTierListItems);
     } else {
       tierListItemsPreviewCleared.splice(
         dragEnterPreviewNotSelectedItemIndex,
         0,
         { src: imageSrc }
       );
-
+      patchTierListItems(tierListID!, tierListItemsPreviewCleared);
+      patchTierList(tierListID!, tierList);
       setTierListItems(tierListItemsPreviewCleared);
     }
   };
