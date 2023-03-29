@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { TierList } from "../pages/TierList";
 import { useTierListStore } from "../zustandStore/store";
 import { IoClose as CloseIcon } from "react-icons/io5";
+import { patchTierList } from "../fetch/patchTierList";
+import { useParams } from "react-router";
 
 const colorOptions = [
   {
@@ -68,6 +70,7 @@ const colorOptions = [
 ];
 
 const ModalRowManipulation = () => {
+  const { tierListID } = useParams();
   const tierList = useTierListStore((state) => state.tierList);
   const tierListItems = useTierListStore((state) => state.tierListItems);
   const setTierList = useTierListStore((state) => state.setTierList);
@@ -88,6 +91,7 @@ const ModalRowManipulation = () => {
       color: "#FFFF7F",
       tierListSelectedItems: [],
     });
+    patchTierList(tierListID!, tierListClone);
     setTierList(tierListClone);
   };
 
@@ -98,6 +102,7 @@ const ModalRowManipulation = () => {
       color: "#FFFF7F",
       tierListSelectedItems: [],
     });
+    patchTierList(tierListID!, tierListClone);
     setTierList(tierListClone);
   };
 
