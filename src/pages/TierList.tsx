@@ -1,10 +1,11 @@
 import html2canvas from "html2canvas";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiFillSetting as SettingsIcon } from "react-icons/ai";
 import {
   MdOutlineKeyboardArrowDown as ArrowDownIcon,
   MdOutlineKeyboardArrowUp as ArrowUpIcon,
 } from "react-icons/md";
+import { useParams } from "react-router";
 
 import Modal from "../components/Modal";
 import ModalDownload from "../components/ModalDownload";
@@ -31,6 +32,16 @@ interface DragEnterDataTransfer {
 }
 
 const TierList = () => {
+  const { tierListID } = useParams();
+  useEffect(() => {
+    (async () => {
+      const tierListAllData = await getTierList(tierListID!);
+      const tierListData: TierList[] = JSON.parse(tierListAllData.tierList);
+      const tierListItemsData: TierListItem[] = tierListAllData.tierListItems;
+      setTierListItems(tierListItemsData);
+      setTierList(tierListData);
+    })();
+  }, []);
   const tierList = useTierListStore((state) => state.tierList);
   const setTierList = useTierListStore((state) => state.setTierList);
   const setTierListCanvas = useTierListStore(
