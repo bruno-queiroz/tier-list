@@ -4,6 +4,7 @@ import { useTierListStore } from "../zustandStore/store";
 import { IoClose as CloseIcon } from "react-icons/io5";
 import { patchTierList } from "../fetch/patchTierList";
 import { useParams } from "react-router";
+import { patchTierListItems } from "../fetch/patchTierListItems";
 
 const colorOptions = [
   {
@@ -117,11 +118,14 @@ const ModalRowManipulation = () => {
 
   const clearRowImages = () => {
     const updatedTierList = [...tierList];
-    setTierListItems([
+    const updatedTierListItems = [
       ...tierListItems,
       ...updatedTierList[rowModalIndex].tierListSelectedItems,
-    ]);
+    ];
+    setTierListItems(updatedTierListItems);
+    patchTierListItems(tierListID!, updatedTierListItems);
     updatedTierList[rowModalIndex].tierListSelectedItems = [];
+    patchTierList(tierListID!, updatedTierList);
     setTierList(updatedTierList);
   };
 
