@@ -110,6 +110,7 @@ const ModalRowManipulation = () => {
     const updatedTierList = tierList.filter(
       (_, index) => index !== rowModalIndex
     );
+    patchTierList(tierListID!, updatedTierList);
     setTierList(updatedTierList);
     changeModalRowState(false);
   };
