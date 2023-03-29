@@ -10,10 +10,15 @@ import { useParams } from "react-router";
 import Modal from "../components/Modal";
 import ModalDownload from "../components/ModalDownload";
 import ModalRowManipulation from "../components/ModalRowManipulation";
+import TierListDroppablePart from "../components/TierListDroppablePart";
 import TierName from "../components/TierName";
 import { getTierList } from "../fetch/getTierList";
 import { patchTierList } from "../fetch/patchTierList";
 import { patchTierListItems } from "../fetch/patchTierListItems";
+import { clearItemPreviewAllRows } from "../utils/clearItemPreviewAllRows";
+import { clearItemPreviewNotSelected } from "../utils/clearItemPreviewNotSelected";
+import { clearItemPreviewSpecificRow } from "../utils/clearItemPreviewSpecificRow";
+import { dragOverHandler } from "../utils/dragOverHandler";
 import { useTierListStore } from "../zustandStore/store";
 
 export interface TierListItem {
@@ -27,7 +32,7 @@ export interface TierList {
   tierListSelectedItems: TierListItem[];
 }
 
-interface DragEnterDataTransfer {
+export interface DragEnterDataTransfer {
   src: string;
   tierListItemIndex: string | undefined;
   dragStartRowIndex: string | undefined;
@@ -66,16 +71,13 @@ const TierList = () => {
   const changeRowModalState = useTierListStore(
     (state) => state.changeRowModalState
   );
-  const [dragEnterDataTransfer, setDragEnterDataTransfer] =
-    useState<DragEnterDataTransfer>({
-      src: "",
-      tierListItemIndex: undefined,
-      dragStartRowIndex: undefined,
-      isItemSelected: false,
-      tierListNotSelectedItemIndex: undefined,
-    });
+  const dragEnterDataTransfer = useTierListStore(
+    (state) => state.dragEnterDataTransfer
+  );
+  const setDragEnterDataTransfer = useTierListStore(
+    (state) => state.setDragEnterDataTransfer
+  );
   const tierListRef = useRef<HTMLDivElement>(null);
-  const [dragEnterPreviewItemIndex, setDragEnterPreviewItemIndex] = useState(0);
   const [
     dragEnterPreviewNotSelectedItemIndex,
     setDragEnterPreviewNotSelectedItemIndex,
@@ -120,85 +122,6 @@ const TierList = () => {
         1
       );
     }, 0);
-    setTierList(updatedTierList);
-  };
-
-  const dragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-  };
-
-  const onDropItemHandler = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const droppedRowIndex = Number(
-      (event.nativeEvent.target as HTMLDivElement)?.parentElement?.dataset
-        ?.rowIndex
-    );
-    const itemDroppedIndex = Number(
-      (event.nativeEvent.target as HTMLDivElement)?.dataset?.tierlistItemIndex
-    );
-    const imageSrc = event.dataTransfer.getData("URL");
-    const updatedTierList = [...tierList];
-    const wasItemNotSelected = event.dataTransfer.getData("text");
-
-    if (wasItemNotSelected === "undefined-undefined") {
-      const updatedTierListItems = tierListItems.filter(
-        (item) => item.src !== imageSrc
-      );
-      patchTierListItems(tierListID!, updatedTierListItems);
-      setTierListItems(updatedTierListItems);
-    }
-
-    updatedTierList[droppedRowIndex].tierListSelectedItems.splice(
-      itemDroppedIndex,
-      0,
-      { src: imageSrc }
-    );
-    patchTierList(tierListID!, updatedTierList);
-    setTierList(updatedTierList);
-  };
-
-  const onDropHandler = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const droppedRowIndex = Number(
-      (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
-    );
-    const imageSrc = event.dataTransfer.getData("URL");
-    const updatedTierList = [...tierList];
-    const wasItemNotSelected = event.dataTransfer.getData("text");
-
-    if (wasItemNotSelected.includes("undefined")) {
-      const updatedTierListItems = tierListItems.filter(
-        (item) => item.src !== imageSrc
-      );
-      patchTierListItems(tierListID!, updatedTierListItems);
-      setTierListItems(updatedTierListItems);
-    }
-
-    const lastItemIndex =
-      tierList[droppedRowIndex].tierListSelectedItems.length - 1;
-    const isLastitemAPreview =
-      tierList[droppedRowIndex].tierListSelectedItems[lastItemIndex]?.opacity;
-
-    if (isLastitemAPreview) {
-      updatedTierList[droppedRowIndex].tierListSelectedItems.push({
-        src: imageSrc,
-      });
-    } else {
-      updatedTierList[droppedRowIndex].tierListSelectedItems.splice(
-        dragEnterPreviewItemIndex,
-        0,
-        {
-          src: imageSrc,
-        }
-      );
-    }
-    clearItemPreviewSpecificRow(droppedRowIndex);
-
-    patchTierList(tierListID!, updatedTierList);
-
     setTierList(updatedTierList);
   };
 
@@ -258,7 +181,6 @@ const TierList = () => {
     changeRowModalIndex(selectedRowIndex);
   };
 
-  
   const moveItemUp = (selectedItemIndex: number) => {
     if (selectedItemIndex === 0) return;
     const updatedTierList = [...tierList];
@@ -290,111 +212,6 @@ const TierList = () => {
     updatedTierList.splice(selectedItemIndex + 1, 1, ...itemSelected);
     updatedTierList.splice(selectedItemIndex, 1, ...desirablePlaceItem);
     setTierList(updatedTierList);
-  };
-
-  const onDragEnterARow = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-
-    setTierListItems(clearItemPreviewNotSelected(tierListItems));
-
-    const enterRowIndex = Number(
-      (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
-    );
-    if (!enterRowIndex && enterRowIndex !== 0) return;
-
-    const updatedTierList = [...tierList];
-
-    const lastItem = tierList[enterRowIndex].tierListSelectedItems.length - 1;
-    const isPreviewAlreadyActive = tierList[
-      enterRowIndex
-    ].tierListSelectedItems.some(
-      (item, index) => item?.opacity && index <= lastItem
-    );
-
-    if (isPreviewAlreadyActive) return;
-
-    const tierListItemPreviewsCleared =
-      clearItemPreviewAllRows(updatedTierList);
-
-    tierListItemPreviewsCleared[enterRowIndex].tierListSelectedItems.push({
-      src: dragEnterDataTransfer.src,
-      opacity: "0.5",
-    });
-
-    setTierList(tierListItemPreviewsCleared);
-  };
-  const onDragLeaveARow = (event: React.DragEvent<HTMLDivElement>) => {
-    const leaveRowIndex = Number(
-      (event.nativeEvent.target as HTMLDivElement).dataset?.rowIndex
-    );
-
-    if (!leaveRowIndex && leaveRowIndex !== 0) return;
-
-    const lastItemIndex =
-      tierList[leaveRowIndex].tierListSelectedItems.length - 1;
-    const isLastItemAPreview =
-      tierList[leaveRowIndex].tierListSelectedItems[lastItemIndex]?.opacity;
-
-    if (!isLastItemAPreview) return;
-    clearItemPreviewSpecificRow(leaveRowIndex);
-  };
-
-  const clearItemPreviewSpecificRow = (rowIndex: number) => {
-    if (!rowIndex && rowIndex !== 0) return;
-
-    const updatedTierList = [...tierList];
-    updatedTierList[rowIndex].tierListSelectedItems = updatedTierList[
-      rowIndex
-    ].tierListSelectedItems.filter((item) => !item?.opacity);
-    setTierList(updatedTierList);
-  };
-
-  const clearItemPreviewAllRows = (tierList: TierList[]) => {
-    const updatedTierList = [...tierList].map((row) => ({
-      ...row,
-      tierListSelectedItems: row.tierListSelectedItems.filter(
-        (item) => !item?.opacity
-      ),
-    }));
-    return updatedTierList;
-  };
-  const clearItemPreviewNotSelected = (tierListItems: TierListItem[]) => {
-    const updatedTierListItems = [...tierListItems].filter(
-      (item) => !item?.opacity
-    );
-    return updatedTierListItems;
-  };
-  const onDragEnterSelectedItemPreview = (
-    event: React.DragEvent<HTMLDivElement>
-  ) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const updatedTierList = [...tierList];
-    const enterItemIndex = Number(
-      (event.nativeEvent.target as HTMLDivElement).dataset?.tierlistItemIndex
-    );
-    const enterItemRowIndex = Number(
-      (event.nativeEvent.target as HTMLDivElement)?.parentElement?.dataset
-        ?.rowIndex
-    );
-
-    if (!enterItemRowIndex && enterItemRowIndex !== 0) return;
-
-    setDragEnterPreviewItemIndex(enterItemIndex);
-    clearItemPreviewSpecificRow(enterItemRowIndex);
-
-    const tierListPreviewCleared = clearItemPreviewAllRows(updatedTierList);
-
-    tierListPreviewCleared[enterItemRowIndex].tierListSelectedItems.splice(
-      enterItemIndex,
-      0,
-      {
-        src: dragEnterDataTransfer.src,
-        opacity: "0.5",
-      }
-    );
-    setTierList(tierListPreviewCleared);
   };
 
   const onDragEnterNotSelectedArea = (
@@ -493,45 +310,9 @@ const TierList = () => {
       <div className="flex flex-col" ref={tierListRef}>
         {tierList.map((row, index) => (
           <div className="flex border-b-[3px] border-black" key={index}>
-            <TierName {...row} index={index}/>
+            <TierName {...row} index={index} />
 
-            <div
-              className="flex flex-wrap bg-[#1A1A17] flex-1"
-              onDragOver={dragOverHandler}
-              onDrop={onDropHandler}
-              onDragEnter={onDragEnterARow}
-              onDragLeave={onDragLeaveARow}
-              data-row-index={index}
-              id="ableToDrop"
-            >
-              {row.tierListSelectedItems.map((tierListItem, index) => {
-                if (tierListItem?.opacity) {
-                  return (
-                    <img
-                      key={index}
-                      className="w-[140px] h-[120px] cursor-pointer pointer-events-none"
-                      src={tierListItem.src}
-                      style={{ opacity: tierListItem?.opacity }}
-                    />
-                  );
-                } else {
-                  return (
-                    <img
-                      key={index}
-                      className="w-[140px] h-[120px] cursor-pointer"
-                      draggable="true"
-                      onDragStart={dragStartHandle}
-                      data-tierlist-item-index={index}
-                      onDragOver={dragOverHandler}
-                      onDrop={onDropItemHandler}
-                      onDragEnter={onDragEnterSelectedItemPreview}
-                      src={tierListItem.src}
-                      id="ableToDrop"
-                    />
-                  );
-                }
-              })}
-            </div>
+            <TierListDroppablePart {...row} index={index} />
             <div className="flex items-center bg-black">
               <div className="flex items-center leading-[0] h-[120px] gap-2 text-5xl">
                 <button
