@@ -263,6 +263,7 @@ const TierList = () => {
   ) => {
     const updatedTierList = [...tierList];
     updatedTierList[rowIndex].text = event.currentTarget.textContent || "";
+    patchTierList(tierListID!, updatedTierList);
     setTierList(updatedTierList);
   };
   const moveItemUp = (selectedItemIndex: number) => {
