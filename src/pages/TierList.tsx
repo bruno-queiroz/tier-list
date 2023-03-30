@@ -7,6 +7,7 @@ import ModalDownload from "../components/ModalDownload";
 import ModalRowManipulation from "../components/ModalRowManipulation";
 import NotSelectedItemsContainer from "../components/NotSelectedItemsContainer";
 import TierListButtons from "../components/TierListButtons";
+import TierListDownload from "../components/TierListDownload";
 import TierListDroppablePart from "../components/TierListDroppablePart";
 import TierName from "../components/TierName";
 import { getTierList } from "../fetch/getTierList";
@@ -47,24 +48,15 @@ const TierList = () => {
   }, []);
   const tierList = useTierListStore((state) => state.tierList);
   const setTierList = useTierListStore((state) => state.setTierList);
-  const setTierListCanvas = useTierListStore(
-    (state) => state.setTierListCanvas
-  );
   const tierListItems = useTierListStore((state) => state.tierListItems);
   const setTierListItems = useTierListStore((state) => state.setTierListItems);
   const isRowModalOpen = useTierListStore((state) => state.isRowModalOpen);
   const isDownloadModalOpen = useTierListStore(
     (state) => state.isDownloadModalOpen
   );
-
   const dragEnterDataTransfer = useTierListStore(
     (state) => state.dragEnterDataTransfer
   );
-
-  const changeDownloadModalState = useTierListStore(
-    (state) => state.changeDownloadModalState
-  );
-
   const tierListRef = useRef<HTMLDivElement>(null);
 
   const retrieveItemWhenDroppingOnWrongArea = (
@@ -101,11 +93,7 @@ const TierList = () => {
       }
     }
   };
-  const downloadTierlist = async () => {
-    changeDownloadModalState(true);
-    const canvas = await html2canvas(tierListRef.current as HTMLElement);
-    setTierListCanvas(canvas);
-  };
+
   return (
     <section
       className="flex flex-col gap-6 p-4"
@@ -129,14 +117,7 @@ const TierList = () => {
         ))}
       </div>
       <NotSelectedItemsContainer />
-
-      <button
-        className="py-2 px-6 rounded bg-S w-[max-content] mx-auto my-4"
-        onClick={downloadTierlist}
-      >
-        Download
-      </button>
-
+      <TierListDownload tierListRef={tierListRef} />
       {isDownloadModalOpen && (
         <Modal>
           <ModalDownload />
