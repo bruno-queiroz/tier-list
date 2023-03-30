@@ -1,15 +1,11 @@
 import html2canvas from "html2canvas";
 import React, { useEffect, useRef, useState } from "react";
-import { AiFillSetting as SettingsIcon } from "react-icons/ai";
-import {
-  MdOutlineKeyboardArrowDown as ArrowDownIcon,
-  MdOutlineKeyboardArrowUp as ArrowUpIcon,
-} from "react-icons/md";
 import { useParams } from "react-router";
 
 import Modal from "../components/Modal";
 import ModalDownload from "../components/ModalDownload";
 import ModalRowManipulation from "../components/ModalRowManipulation";
+import TierListButtons from "../components/TierListButtons";
 import TierListDroppablePart from "../components/TierListDroppablePart";
 import TierName from "../components/TierName";
 import { getTierList } from "../fetch/getTierList";
@@ -176,44 +172,6 @@ const TierList = () => {
     }
   };
 
-  const handleOpenModalRowManipulation = (selectedRowIndex: number) => {
-    changeRowModalState(true);
-    changeRowModalIndex(selectedRowIndex);
-  };
-
-  const moveItemUp = (selectedItemIndex: number) => {
-    if (selectedItemIndex === 0) return;
-    const updatedTierList = [...tierList];
-    const itemSelected = updatedTierList.slice(
-      selectedItemIndex,
-      selectedItemIndex + 1
-    );
-    const desirablePlaceItem = updatedTierList.slice(
-      selectedItemIndex - 1,
-      selectedItemIndex
-    );
-
-    updatedTierList.splice(selectedItemIndex - 1, 1, ...itemSelected);
-    updatedTierList.splice(selectedItemIndex, 1, ...desirablePlaceItem);
-    setTierList(updatedTierList);
-  };
-  const moveItemdown = (selectedItemIndex: number) => {
-    if (tierList.length - 1 <= selectedItemIndex) return;
-    const updatedTierList = [...tierList];
-    const itemSelected = updatedTierList.slice(
-      selectedItemIndex,
-      selectedItemIndex + 1
-    );
-
-    const desirablePlaceItem = updatedTierList.slice(
-      selectedItemIndex + 1,
-      selectedItemIndex + 2
-    );
-    updatedTierList.splice(selectedItemIndex + 1, 1, ...itemSelected);
-    updatedTierList.splice(selectedItemIndex, 1, ...desirablePlaceItem);
-    setTierList(updatedTierList);
-  };
-
   const onDragEnterNotSelectedArea = (
     event: React.DragEvent<HTMLDivElement>
   ) => {
@@ -311,26 +269,8 @@ const TierList = () => {
         {tierList.map((row, index) => (
           <div className="flex border-b-[3px] border-black" key={index}>
             <TierName {...row} index={index} />
-
             <TierListDroppablePart {...row} index={index} />
-            <div className="flex items-center bg-black">
-              <div className="flex items-center leading-[0] h-[120px] gap-2 text-5xl">
-                <button
-                  className="pl-[5px]"
-                  onClick={() => handleOpenModalRowManipulation(index)}
-                >
-                  <SettingsIcon />
-                </button>
-                <div className="flex flex-col">
-                  <button onClick={() => moveItemUp(index)}>
-                    <ArrowUpIcon />
-                  </button>
-                  <button onClick={() => moveItemdown(index)}>
-                    <ArrowDownIcon />
-                  </button>
-                </div>
-              </div>
-            </div>
+            <TierListButtons index={index} />
           </div>
         ))}
       </div>
