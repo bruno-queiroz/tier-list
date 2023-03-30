@@ -86,6 +86,7 @@ const NotSelectedItemsContainer = () => {
         } else {
           return (
             <TierListItemNotSelected
+              key={index}
               {...tierListItem}
               index={index}
               setDragItemIndex={setDragEnterPreviewNotSelectedItemIndex}

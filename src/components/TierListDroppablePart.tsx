@@ -138,7 +138,7 @@ const TierListDroppablePart = ({
         if (tierListItem?.opacity) {
           return <TierListPreviewItem key={index} {...tierListItem} />;
         } else {
-          return <TierListItem {...tierListItem} index={index} />;
+          return <TierListItem key={index} {...tierListItem} index={index} />;
         }
       })}
     </div>
