@@ -2,8 +2,11 @@ import React from "react";
 import { useParams } from "react-router";
 import { patchTierList } from "../fetch/patchTierList";
 import { TierList } from "../pages/TierList";
+import { throttle } from "../utils/throttle";
 import { useTierListStore } from "../zustandStore/store";
 type TierNameProps = TierList & { index: number };
+
+const typeThrottle = throttle();
 
 const TierName = ({ color, text, index }: TierNameProps) => {
   const { tierListID } = useParams();
@@ -16,7 +19,8 @@ const TierName = ({ color, text, index }: TierNameProps) => {
   ) => {
     const updatedTierList = [...tierList];
     updatedTierList[rowIndex].text = event.currentTarget.textContent || "";
-    patchTierList(tierListID!, updatedTierList);
+    typeThrottle(() => patchTierList(tierListID!, updatedTierList));
+
     setTierList(updatedTierList);
   };
 
