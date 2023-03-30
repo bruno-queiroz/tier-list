@@ -136,7 +136,6 @@ const TierListItem = ({ src, index }: TierListItemProps) => {
   };
   return (
     <img
-      key={index}
       className="w-[140px] h-[120px] cursor-pointer"
       draggable="true"
       onDragStart={dragStartHandle}
