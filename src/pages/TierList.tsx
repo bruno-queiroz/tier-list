@@ -1,5 +1,5 @@
 import html2canvas from "html2canvas";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 
 import Modal from "../components/Modal";
@@ -40,8 +40,9 @@ const TierList = () => {
   useEffect(() => {
     (async () => {
       const tierListAllData = await getTierList(tierListID!);
-      const tierListData: TierList[] = JSON.parse(tierListAllData.tierList);
-      const tierListItemsData: TierListItem[] = tierListAllData.tierListItems;
+      const tierListData: TierList[] = JSON.parse(tierListAllData?.tierList);
+      const tierListItemsData: TierListItem[] = tierListAllData?.tierListItems;
+      setTierListTitle(tierListAllData?.tierListName);
       setTierListItems(tierListItemsData);
       setTierList(tierListData);
     })();
@@ -50,6 +51,7 @@ const TierList = () => {
   const setTierList = useTierListStore((state) => state.setTierList);
   const tierListItems = useTierListStore((state) => state.tierListItems);
   const setTierListItems = useTierListStore((state) => state.setTierListItems);
+  const [tierListTitle, setTierListTitle] = useState("");
   const isRowModalOpen = useTierListStore((state) => state.isRowModalOpen);
   const isDownloadModalOpen = useTierListStore(
     (state) => state.isDownloadModalOpen
@@ -100,7 +102,9 @@ const TierList = () => {
       onDrop={retrieveItemWhenDroppingOnWrongArea}
       onDragOver={dragOverHandler}
     >
-      <h1 className="text-5xl font-bold text-center my-4">~ TierList</h1>
+      <h1 className="text-5xl font-bold text-center my-4">
+        {tierListTitle} TierList
+      </h1>
       {isRowModalOpen && (
         <Modal>
           <ModalRowManipulation />
