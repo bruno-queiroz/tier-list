@@ -26,14 +26,14 @@ const TierName = ({ color, text, index }: TierNameProps) => {
 
   return (
     <div
-      className="grid place-content-center relative"
+      className="flex justify-center items-center relative"
       style={{ backgroundColor: color }}
     >
-      <div className="text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center">
+      <div className="text-xl p-2 w-[140px] text-[#1A1A17] text-center">
         {text}
       </div>
       <div
-        className={`text-xl p-4 py-[46px] w-[140px] min-h-[120px] text-[#1A1A17] text-center absolute inset-0`}
+        className={`text-xl p-2 w-[140px] text-[#1A1A17] text-center absolute inset-0`}
         contentEditable
         style={{
           color: "transparent",
