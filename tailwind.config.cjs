@@ -10,6 +10,7 @@ module.exports = {
         C: "#FFFF7F",
         D: "#BFFF7F",
         primaryDarkGray: "#1A1A17",
+        lightGray: "#2A2A25",
       },
     },
   },
