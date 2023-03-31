@@ -4,7 +4,7 @@ export const patchTierList = async (
   tierListID: string,
   tierList: TierList[]
 ) => {
-  const response = fetch(
+  const response = await fetch(
     `http://localhost:3000/update-tier-list/${tierListID}`,
     {
       method: "PATCH",
@@ -14,4 +14,6 @@ export const patchTierList = async (
       body: JSON.stringify(tierList),
     }
   );
+  const data = await response.json();
+  return data;
 };
