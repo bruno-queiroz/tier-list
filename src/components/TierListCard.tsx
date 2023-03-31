@@ -9,7 +9,7 @@ const TierListCard = ({
 }: TierListResponse) => {
   return (
     <Link to={`tier-list/${_id}`}>
-      <article className="flex flex-col gap-4 bg-gray-800 p-3 rounded">
+      <article className="flex flex-col gap-4 bg-primaryDarkGray p-3 rounded">
         <img
           src={tierListImage}
           alt=""

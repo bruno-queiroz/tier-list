@@ -126,7 +126,7 @@ const CreateTierList = () => {
           <span className="font-medium text-xl ">Name of The Tier List</span>
           <input
             type="text"
-            className="bg-gray-800 p-3"
+            className="bg-primaryDarkGray p-3"
             ref={nameInputRef}
             required
           />
@@ -135,7 +135,7 @@ const CreateTierList = () => {
         <label className="flex flex-col gap-4 relative">
           <span className="font-medium text-xl ">Tier List Image</span>
 
-          <div className="flex gap-2 justify-center items-center bg-gray-800 p-3 border-S border-dotted border-[3px] cursor-pointer">
+          <div className="flex gap-2 justify-center items-center bg-primaryDarkGray p-3 border-S border-dotted border-[3px] cursor-pointer">
             <ImageIcon className="text-4xl" />
             <span>Add an Image</span>
           </div>
@@ -176,7 +176,7 @@ const CreateTierList = () => {
             />
           </div>
 
-          <div className="flex gap-2 justify-center items-center bg-gray-800 p-3 border-A border-dotted border-[3px] cursor-pointer">
+          <div className="flex gap-2 justify-center items-center bg-primaryDarkGray p-3 border-A border-dotted border-[3px] cursor-pointer">
             <ImageIcon className="text-4xl" />
             <span>Add Images</span>
           </div>

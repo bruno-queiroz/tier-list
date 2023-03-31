@@ -17,7 +17,7 @@ const Home = () => {
       <h1 className="text-5xl font-bold text-center mt-4">Your Tier Lists</h1>
       <Link
         to="/create-tier-list"
-        className="py-3 px-4 rounded bg-S w-[max-content]"
+        className="py-3 px-4 rounded bg-D text-primaryDarkGray w-[max-content]"
       >
         Create Tier List
       </Link>

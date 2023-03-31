@@ -74,7 +74,7 @@ const NotSelectedItemsContainer = () => {
 
   return (
     <div
-      className="flex flex-wrap w-full min-h-[135px] p-2 bg-gray-800"
+      className="flex flex-wrap w-full min-h-[135px] p-2 bg-primaryDarkGray"
       onDrop={onDropItemsNotSelectedHandle}
       onDragOver={dragOverHandler}
       onDragEnter={onDragEnterNotSelectedArea}

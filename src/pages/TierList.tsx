@@ -98,7 +98,7 @@ const TierList = () => {
 
   return (
     <section
-      className="flex flex-col gap-6 p-4"
+      className="flex flex-col gap-6 p-4 bg-lightGray"
       onDrop={retrieveItemWhenDroppingOnWrongArea}
       onDragOver={dragOverHandler}
     >
