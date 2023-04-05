@@ -15,7 +15,6 @@ const TierListDownload = ({
   );
   const downloadTierlist = async () => {
     changeDownloadModalState(true);
-    console.log(tierListRef);
     const canvas = await html2canvas(tierListRef.current as HTMLElement, {
       proxy: "http://localhost:3000",
     });
