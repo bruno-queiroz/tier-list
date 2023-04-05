@@ -1,7 +1,7 @@
-import { TierListFormData } from "../pages/CreateTierList";
+import { apiBaseUrl } from "./apiConfig";
 
 export const postTierList = async (tierList: FormData) => {
-  const response = await fetch("http://localhost:3000/create-tier-list", {
+  const response = await fetch(`${apiBaseUrl}/create-tier-list`, {
     method: "POST",
     body: tierList,
   });

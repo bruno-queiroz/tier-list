@@ -1,11 +1,12 @@
 import { TierListItem } from "../pages/TierList";
+import { apiBaseUrl } from "./apiConfig";
 
 export const patchTierListItems = async (
   tierListID: string,
   tierListItems: TierListItem[]
 ) => {
   const response = await fetch(
-    `http://localhost:3000/update-tier-list-items/${tierListID}`,
+    `${apiBaseUrl}/update-tier-list-items/${tierListID}`,
     {
       method: "PATCH",
       headers: {
