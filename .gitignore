@@ -25,3 +25,4 @@ dist-ssr
 
 mockData.ts
 public/images
+.env
