@@ -16,7 +16,7 @@ const TierListDownload = ({
   const downloadTierlist = async () => {
     changeDownloadModalState(true);
     const canvas = await html2canvas(tierListRef.current as HTMLElement, {
-      proxy: "http://localhost:3000",
+      proxy: "https://tier-list-api.cyclic.app",
     });
     setTierListCanvas(canvas);
   };
