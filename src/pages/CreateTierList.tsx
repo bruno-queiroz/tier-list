@@ -2,13 +2,13 @@ import React, { useRef, useState } from "react";
 
 import { BiImageAdd as ImageIcon } from "react-icons/bi";
 import { postTierList } from "../fetch/postTierList";
-import { TierListItem } from "./TierList";
+import { postImagesOnImgbb } from "../fetch/postImagesOnImgbb";
 
 export interface TierListFormData {
   tierListName: string;
-  tierListImage: string;
-  tierListItems: TierListItem[];
   tierList: string;
+  tierListItems: { src: string }[];
+  tierListImage: string;
 }
 
 const readAsDataURLAsync = (tierListItem: File) =>
@@ -36,22 +36,27 @@ const CreateTierList = () => {
   const CInputRef = useRef<HTMLInputElement>(null);
   const DInputRef = useRef<HTMLInputElement>(null);
 
-  const handleTierListSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleTierListSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
-    const tierListFormData = new FormData();
     const tierListItemsArray = tierListItemsImages.current?.files;
 
-    if (tierListItemsArray) {
-      for (const tierListItem of tierListItemsArray) {
-        tierListFormData.append("tierListItems", tierListItem);
-      }
-    }
+    if (!tierListItemsArray) return;
 
-    tierListFormData.append(
-      "tierListImage",
-      tierListImage.current?.files?.[0] || ""
+    const imagesLinkPromise = [...tierListItemsArray].map(
+      async (tierListItem) => {
+        const formData = new FormData();
+        formData.append("image", tierListItem);
+        return { src: (await postImagesOnImgbb(formData))?.data?.url };
+      }
     );
 
+    const tierListItemsImgLinkArray = await Promise.all(imagesLinkPromise);
+    const tierListImageForm = new FormData();
+    tierListImageForm.append("image", tierListImage.current?.files?.[0] || "");
+    const tierListImageLink = (await postImagesOnImgbb(tierListImageForm))?.data
+      ?.url;
     const emptyTierList = [
       {
         color: "#FF7F7F",
@@ -83,8 +88,12 @@ const CreateTierList = () => {
       },
     ];
 
-    tierListFormData.append("tierListName", nameInputRef.current?.value || "");
-    tierListFormData.append("tierList", JSON.stringify(emptyTierList));
+    const tierListFormData = {
+      tierListName: nameInputRef.current?.value || "",
+      tierList: JSON.stringify(emptyTierList),
+      tierListItems: tierListItemsImgLinkArray,
+      tierListImage: tierListImageLink,
+    };
 
     postTierList(tierListFormData);
   };
