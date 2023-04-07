@@ -1,5 +1,3 @@
-import { apiBaseUrl } from "./apiConfig";
-
 export interface ImageData {
   id: string;
   title: string;
