@@ -94,7 +94,7 @@ const CreateTierList = () => {
       tierListItems: tierListItemsImgLinkArray,
       tierListImage: tierListImageLink,
     };
-
+    console.log({ formData: tierListFormData });
     postTierList(tierListFormData);
   };
 
