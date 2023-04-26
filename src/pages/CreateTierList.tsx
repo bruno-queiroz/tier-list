@@ -3,6 +3,8 @@ import React, { useRef, useState } from "react";
 import { BiImageAdd as ImageIcon } from "react-icons/bi";
 import { postTierList } from "../fetch/postTierList";
 import { postImagesOnImgbb } from "../fetch/postImagesOnImgbb";
+import Notification from "../components/Notification";
+import { useTierListStore } from "../zustandStore/store";
 
 export interface TierListFormData {
   tierListName: string;
@@ -25,6 +27,13 @@ const CreateTierList = () => {
   const [tierListItemsPreview, setTierListItemsPreview] = useState<string[]>(
     []
   );
+  const setNotificationText = useTierListStore(
+    (state) => state.setNotificationText
+  );
+  const setIsNotificationOnScreen = useTierListStore(
+    (state) => state.setIsNotificationOnScreen
+  );
+
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   const tierListImage = useRef<HTMLInputElement>(null);
@@ -94,7 +103,10 @@ const CreateTierList = () => {
       tierListItems: tierListItemsImgLinkArray,
       tierListImage: tierListImageLink,
     };
-    postTierList(tierListFormData);
+    const postResponse = await postTierList(tierListFormData);
+
+    setIsNotificationOnScreen(true);
+    setNotificationText(postResponse.msg);
   };
 
   const handleTierListPreviewImg = (
@@ -123,6 +135,7 @@ const CreateTierList = () => {
 
   return (
     <section className="p-4">
+      <Notification />
       <h1 className="text-5xl font-bold text-center my-8">
         Create a Tier List
       </h1>
