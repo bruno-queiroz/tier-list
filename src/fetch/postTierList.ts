@@ -1,6 +1,11 @@
 import { TierListFormData } from "../pages/CreateTierList";
 import { apiBaseUrl } from "./apiConfig";
 
+interface PostTierListResponse {
+  msg: string;
+  isOk: boolean;
+}
+
 export const postTierList = async (tierList: TierListFormData) => {
   const response = await fetch(`${apiBaseUrl}/create-tier-list`, {
     method: "POST",
@@ -9,6 +14,6 @@ export const postTierList = async (tierList: TierListFormData) => {
     },
     body: JSON.stringify(tierList),
   });
-  const data = await response.json();
+  const data: PostTierListResponse = await response.json();
   return data;
 };
