@@ -14,6 +14,8 @@ interface TierListState {
   isDownloadModalOpen: boolean;
   rowModalIndex: number;
   tierListCanvas: HTMLCanvasElement | null;
+  isNotificationOnScreen: boolean;
+  notificationText: string;
   setTierList: (tierList: TierList[]) => void;
   setTierListItems: (tierListItems: TierListItem[]) => void;
   setDragEnterDataTransfer: (data: DragEnterDataTransfer) => void;
@@ -22,6 +24,8 @@ interface TierListState {
   changeRowModalState: (trueOrfalse: boolean) => void;
   changeDownloadModalState: (trueOrfalse: boolean) => void;
   setTierListCanvas: (canvas: HTMLCanvasElement) => void;
+  setIsNotificationOnScreen: (boolean: boolean) => void;
+  setNotificationText: (text: string) => void;
 }
 
 export const useTierListStore = create<TierListState>()((set) => ({
@@ -39,6 +43,8 @@ export const useTierListStore = create<TierListState>()((set) => ({
   isDownloadModalOpen: false,
   rowModalIndex: 0,
   tierListCanvas: null,
+  isNotificationOnScreen: false,
+  notificationText: "",
   setTierList: (tierList) => set((state) => ({ tierList })),
   setTierListItems: (tierListItems) => set((state) => ({ tierListItems })),
   setDragEnterDataTransfer: (data) =>
@@ -52,4 +58,7 @@ export const useTierListStore = create<TierListState>()((set) => ({
     set((state) => ({ isDownloadModalOpen: trueOrfalse })),
   setTierListCanvas: (canvas: HTMLCanvasElement) =>
     set((state) => ({ tierListCanvas: canvas })),
+  setIsNotificationOnScreen: (boolean) =>
+    set((state) => ({ isNotificationOnScreen: boolean })),
+  setNotificationText: (text) => set((state) => ({ notificationText: text })),
 }));
