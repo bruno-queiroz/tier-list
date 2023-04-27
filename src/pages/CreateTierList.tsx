@@ -5,6 +5,7 @@ import { postTierList } from "../fetch/postTierList";
 import { postImagesOnImgbb } from "../fetch/postImagesOnImgbb";
 import Notification from "../components/Notification";
 import { useTierListStore } from "../zustandStore/store";
+import Spinner from "../components/Spinner";
 
 export interface TierListFormData {
   tierListName: string;
@@ -27,6 +28,7 @@ const CreateTierList = () => {
   const [tierListItemsPreview, setTierListItemsPreview] = useState<string[]>(
     []
   );
+  const [postRequestIsLoading, setPostRequestIsLoading] = useState(false);
   const setNotificationText = useTierListStore(
     (state) => state.setNotificationText
   );
@@ -49,6 +51,8 @@ const CreateTierList = () => {
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
+    setPostRequestIsLoading(true);
+
     const tierListItemsArray = tierListItemsImages.current?.files;
 
     if (!tierListItemsArray) return;
@@ -103,8 +107,10 @@ const CreateTierList = () => {
       tierListItems: tierListItemsImgLinkArray,
       tierListImage: tierListImageLink,
     };
+
     const postResponse = await postTierList(tierListFormData);
 
+    setPostRequestIsLoading(false);
     setIsNotificationOnScreen(true);
     setNotificationText(postResponse.msg);
   };
@@ -253,8 +259,11 @@ const CreateTierList = () => {
           ref={DInputRef}
         />
 
-        <button className="bg-D text-gray-900  font-semibold py-3 px-4 rounded w-[max-content] mx-auto mt-4">
-          Submit
+        <button
+          className="flex justify-center bg-D text-gray-900 min-w-[90px] font-semibold py-3 px-4 rounded w-[max-content] mx-auto mt-4"
+          disabled={postRequestIsLoading}
+        >
+          {postRequestIsLoading ? <Spinner /> : "Submit"}
         </button>
       </form>
     </section>
