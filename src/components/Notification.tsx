@@ -14,13 +14,13 @@ const Notification = () => {
     if (isNotificationOnScreen) {
       setTimeout(() => {
         setIsNotificationOnScreen(false);
-      }, 1000);
+      }, 3000);
     }
   }, [isNotificationOnScreen]);
 
   return (
     <div
-      className="fixed z-20 left-0 top-8 bg-primaryDarkGray transition-transform p-6 text-D rounded shadow-lg"
+      className="fixed z-20 left-0 top-8 bg-primaryDarkGray transition-transform duration-300 p-6 text-D rounded shadow-lg"
       style={{
         transform: isNotificationOnScreen
           ? "translateX(0)"
