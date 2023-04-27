@@ -47,6 +47,8 @@ const CreateTierList = () => {
   const CInputRef = useRef<HTMLInputElement>(null);
   const DInputRef = useRef<HTMLInputElement>(null);
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   const handleTierListSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
@@ -113,6 +115,12 @@ const CreateTierList = () => {
     setPostRequestIsLoading(false);
     setIsNotificationOnScreen(true);
     setNotificationText(postResponse.msg);
+
+    if (postResponse.isOk) {
+      formRef.current?.reset();
+      setTierListImagePreview("");
+      setTierListItemsPreview([]);
+    }
   };
 
   const handleTierListPreviewImg = (
@@ -148,6 +156,7 @@ const CreateTierList = () => {
       <form
         className="flex flex-col gap-6 w-[80%] mx-auto"
         onSubmit={handleTierListSubmit}
+        ref={formRef}
       >
         <label className="flex flex-col gap-4">
           <span className="font-medium text-xl ">Name of The Tier List</span>
