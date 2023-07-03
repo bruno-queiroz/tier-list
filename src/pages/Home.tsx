@@ -24,11 +24,18 @@ const Home = () => {
       >
         Create Tier List
       </Link>
-      <div className="flex gap-4 flex-wrap justify-center">
-        {tierLists?.map((tierList, index) => (
-          <TierListCard key={index} {...tierList} />
-        ))}
-      </div>
+
+      {isLoading ? (
+        <TierListsSkeleton />
+      ) : (
+        <>
+          <div className="grid grid-cols-tier-lists gap-4 w-full justify-center max-w-[945px]">
+            {tierLists?.map((tierList, index) => (
+              <TierListCard key={index} {...tierList} />
+            ))}
+          </div>
+        </>
+      )}
     </main>
   );
 };
