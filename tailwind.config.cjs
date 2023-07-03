@@ -12,6 +12,9 @@ module.exports = {
         primaryDarkGray: "#1A1A17",
         lightGray: "#2A2A25",
       },
+      gridTemplateColumns: {
+        "tier-lists": "repeat(auto-fit, 225px)",
+      },
     },
   },
   plugins: [],
