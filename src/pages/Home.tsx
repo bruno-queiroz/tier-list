@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TierListCard from "../components/TierListCard";
 import { getTierLists, TierListResponse } from "../fetch/getTierLists";
+import TierListsSkeleton from "../components/TierListsSkeleton";
 
 const Home = () => {
   const [tierLists, setTierLists] = useState<TierListResponse[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       setTierLists(await getTierLists());
+      setIsLoading(false);
     })();
   }, []);
 
