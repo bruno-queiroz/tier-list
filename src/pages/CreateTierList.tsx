@@ -154,7 +154,7 @@ const CreateTierList = () => {
         Create a Tier List
       </h1>
       <form
-        className="flex flex-col gap-6 w-[1300px] w-full mx-auto"
+        className="flex flex-col gap-6 max-w-[1300px] lg:w-[80%] mx-auto"
         onSubmit={handleTierListSubmit}
         ref={formRef}
       >
