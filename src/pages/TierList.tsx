@@ -111,7 +111,10 @@ const TierList = () => {
         </Modal>
       )}
 
-      <div className="flex flex-col" ref={tierListRef}>
+      <div
+        className="flex flex-col max-w-[1300px] w-full mx-auto"
+        ref={tierListRef}
+      >
         {tierList.map((row, index) => (
           <div className="flex border-b-[3px] border-black" key={index}>
             <TierName {...row} index={index} />
