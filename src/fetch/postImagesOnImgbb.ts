@@ -48,6 +48,5 @@ export const postImagesOnImgbb = async (tierList: FormData) => {
     }
   );
   const data: ImageResponse = await response.json();
-  console.log({ imgData: data });
   return data;
 };
