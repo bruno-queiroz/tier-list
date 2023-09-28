@@ -134,7 +134,7 @@ const TierListDroppablePart = ({
       data-row-index={index}
       id="ableToDrop"
     >
-      {tierListSelectedItems.map((tierListItem, index) => {
+      {tierListSelectedItems?.map((tierListItem, index) => {
         if (tierListItem?.opacity) {
           return <TierListPreviewItem key={index} {...tierListItem} />;
         } else {
