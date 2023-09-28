@@ -5,7 +5,7 @@ export const patchTierList = async (
   tierListID: string,
   tierList: TierList[]
 ) => {
-  const response = await fetch(`${apiBaseUrl}/update-tier-list/${tierListID}`, {
+  const response = await fetch(`${apiBaseUrl}/tier-list/${tierListID}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

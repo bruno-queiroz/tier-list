@@ -7,7 +7,7 @@ interface PostTierListResponse {
 }
 
 export const postTierList = async (tierList: TierListFormData) => {
-  const response = await fetch(`${apiBaseUrl}/create-tier-list`, {
+  const response = await fetch(`${apiBaseUrl}/tier-list`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
