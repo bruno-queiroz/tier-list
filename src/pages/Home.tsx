@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TierListCard from "../components/TierListCard";
-import { getTierLists, TierListResponse } from "../fetch/getTierLists";
+import { getTierLists } from "../fetch/getTierLists";
 import TierListsSkeleton from "../components/TierListsSkeleton";
+import { TierListFormData } from "./CreateTierList";
+
+type TierListData = TierListFormData & { _id: string };
 
 const Home = () => {
-  const [tierLists, setTierLists] = useState<TierListResponse[]>([]);
+  const [tierLists, setTierLists] = useState<TierListData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      setTierLists(await getTierLists());
+      const tierList = await getTierLists();
+      setTierLists(tierList?.data);
       setIsLoading(false);
     })();
   }, []);
@@ -30,8 +34,8 @@ const Home = () => {
       ) : (
         <>
           <div className="grid grid-cols-tier-lists gap-4 w-full justify-center max-w-[945px]">
-            {tierLists?.map((tierList, index) => (
-              <TierListCard key={index} {...tierList} />
+            {tierLists?.map((tierListData, index) => (
+              <TierListCard key={index} {...tierListData} />
             ))}
           </div>
         </>
