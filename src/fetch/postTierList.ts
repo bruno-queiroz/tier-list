@@ -14,6 +14,8 @@ export const postTierList = async (tierList: TierListFormData) => {
     },
     body: JSON.stringify(tierList),
   });
+
   const data: PostTierListResponse = await response.json();
+
   return data;
 };
