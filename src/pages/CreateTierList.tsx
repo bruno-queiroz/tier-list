@@ -6,10 +6,11 @@ import { postImagesOnImgbb } from "../fetch/postImagesOnImgbb";
 import Notification from "../components/Notification";
 import { useTierListStore } from "../zustandStore/store";
 import Spinner from "../components/Spinner";
+import { TierList } from "./TierList";
 
 export interface TierListFormData {
   tierListName: string;
-  tierList: string;
+  tierList: TierList[];
   tierListItems: { src: string }[];
   tierListImage: string;
 }
@@ -105,7 +106,7 @@ const CreateTierList = () => {
 
     const tierListFormData = {
       tierListName: nameInputRef.current?.value || "",
-      tierList: JSON.stringify(emptyTierList),
+      tierList: emptyTierList,
       tierListItems: tierListItemsImgLinkArray,
       tierListImage: tierListImageLink,
     };
