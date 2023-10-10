@@ -40,9 +40,11 @@ const TierList = () => {
   useEffect(() => {
     (async () => {
       const tierListAllData = await getTierList(tierListID!);
-      const tierListData: TierList[] = JSON.parse(tierListAllData?.tierList);
-      const tierListItemsData: TierListItem[] = tierListAllData?.tierListItems;
-      setTierListTitle(tierListAllData?.tierListName);
+      const tierListData: TierList[] = tierListAllData?.data.tierList;
+      const tierListItemsData: TierListItem[] =
+        tierListAllData?.data.tierListItems;
+
+      setTierListTitle(tierListAllData?.data.tierListName);
       setTierListItems(tierListItemsData);
       setTierList(tierListData);
     })();
@@ -115,7 +117,7 @@ const TierList = () => {
         className="flex flex-col max-w-[1300px] w-full mx-auto"
         ref={tierListRef}
       >
-        {tierList.map((row, index) => (
+        {tierList?.map((row, index) => (
           <div className="flex border-b-[3px] border-black" key={index}>
             <TierName {...row} index={index} />
             <TierListDroppablePart {...row} index={index} />
