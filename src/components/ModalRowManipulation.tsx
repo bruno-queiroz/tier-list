@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { TierList } from "../pages/TierList";
 import { useTierListStore } from "../zustandStore/store";
 import { IoClose as CloseIcon } from "react-icons/io5";
 import { patchTierList } from "../fetch/patchTierList";
@@ -85,62 +84,72 @@ const ModalRowManipulation = () => {
   );
 
   // need IDs
-  const addRowAbove = () => {
+  const addRowAbove = async () => {
     const tierListClone = [...tierList];
     tierListClone.splice(rowModalIndex, 0, {
       text: "New",
       color: "#FFFF7F",
       tierListSelectedItems: [],
     });
-    patchTierList(tierListID!, tierListClone);
+
+    await patchTierList(tierListID!, tierListClone);
     setTierList(tierListClone);
   };
 
-  const addRowBelow = () => {
+  const addRowBelow = async () => {
     const tierListClone = [...tierList];
     tierListClone.splice(rowModalIndex + 1, 0, {
       text: "New",
       color: "#FFFF7F",
       tierListSelectedItems: [],
     });
-    patchTierList(tierListID!, tierListClone);
+
+    await patchTierList(tierListID!, tierListClone);
     setTierList(tierListClone);
   };
 
-  const deleteRow = () => {
+  const deleteRow = async () => {
     const updatedTierList = tierList.filter(
       (_, index) => index !== rowModalIndex
     );
-    patchTierList(tierListID!, updatedTierList);
+
+    await patchTierList(tierListID!, updatedTierList);
     setTierList(updatedTierList);
     changeModalRowState(false);
   };
 
-  const clearRowImages = () => {
+  const clearRowImages = async () => {
     const updatedTierList = [...tierList];
     const updatedTierListItems = [
       ...tierListItems,
       ...updatedTierList[rowModalIndex].tierListSelectedItems,
     ];
+
     setTierListItems(updatedTierListItems);
-    patchTierListItems(tierListID!, updatedTierListItems);
+    await patchTierListItems(tierListID!, updatedTierListItems);
+
     updatedTierList[rowModalIndex].tierListSelectedItems = [];
-    patchTierList(tierListID!, updatedTierList);
+
+    await patchTierList(tierListID!, updatedTierList);
     setTierList(updatedTierList);
   };
 
-  const editItemtext = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const editItemtext = async (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const updatedTierList = [...tierList];
     updatedTierList[rowModalIndex].text = event.target.value;
 
-    patchTierList(tierListID!, updatedTierList);
+    await patchTierList(tierListID!, updatedTierList);
     setTextAreaValue(event.target.value);
     setTierList(updatedTierList);
   };
 
-  const changeLabelBackgroundColor = (color: string) => {
+  const changeLabelBackgroundColor = async (color: string) => {
     const updatedTierList = [...tierList];
     updatedTierList[rowModalIndex].color = color;
+
+    await patchTierList(tierListID!, updatedTierList);
     setTierList(updatedTierList);
   };
   return (
