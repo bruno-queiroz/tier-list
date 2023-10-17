@@ -16,7 +16,7 @@ const TierListCard = ({
       <article className="flex flex-col gap-4 bg-primaryDarkGray p-3 rounded">
         <img
           src={tierListImage}
-          alt=""
+          alt="tier list cover image"
           className="w-[200px] h-[150px] bg-transparent object-cover"
         />
         <span>{tierListName}</span>
