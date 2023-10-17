@@ -1,0 +1,77 @@
+{
+  "data": [
+    {
+      "_id": "652557ca3a85223c29e72a29",
+      "tierListName": "Programming Languages Mocked",
+      "tierListImage": "https://i.ibb.co/1TCpZtH/programming-languages.png",
+      "tierList": [
+        {
+          "color": "#FF7F7F",
+          "text": "S",
+          "tierListSelectedItems": [
+            {
+              "src": "https://i.ibb.co/68rqTFP/javascript.png",
+              "_id": "652ab13e6c91f6d31006a623"
+            }
+          ],
+          "_id": "652ab13e6c91f6d31006a622"
+        },
+        {
+          "color": "#FFBF7F",
+          "text": "A",
+          "tierListSelectedItems": [
+            {
+              "src": "https://i.ibb.co/G7fQkkk/java.png",
+              "_id": "652ab13e6c91f6d31006a625"
+            },
+            {
+              "src": "https://i.ibb.co/YNLT1qq/rust.png",
+              "_id": "652ab13e6c91f6d31006a626"
+            }
+          ],
+          "_id": "652ab13e6c91f6d31006a624"
+        },
+        {
+          "color": "#FFDF7F",
+          "text": "B",
+          "tierListSelectedItems": [
+            {
+              "src": "https://i.ibb.co/h826xDk/phyton.png",
+              "_id": "652ab13e6c91f6d31006a628"
+            },
+            {
+              "src": "https://i.ibb.co/Tb82xTK/ruby.png",
+              "_id": "652ab13e6c91f6d31006a629"
+            },
+            {
+              "src": "https://i.ibb.co/KjwcTJM/kotlin.jpg",
+              "_id": "652ab13e6c91f6d31006a62a"
+            }
+          ],
+          "_id": "652ab13e6c91f6d31006a627"
+        },
+        {
+          "color": "#FFFF7F",
+          "text": "C",
+          "tierListSelectedItems": [],
+          "_id": "652ab13e6c91f6d31006a62b"
+        },
+        {
+          "color": "#BFFF7F",
+          "text": "D",
+          "tierListSelectedItems": [
+            {
+              "src": "https://i.ibb.co/PhDyDXN/php.png",
+              "_id": "652ab13e6c91f6d31006a62d"
+            }
+          ],
+          "_id": "652ab13e6c91f6d31006a62c"
+        }
+      ],
+      "tierListItems": [],
+      "__v": 0
+    }
+  ],
+  "msg": "All Tier Lists",
+  "isOk": true
+}
