@@ -35,7 +35,7 @@ const Home = () => {
         <>
           <div className="grid grid-cols-tier-lists gap-4 w-full justify-center max-w-[945px]">
             {tierLists?.map((tierListData, index) => (
-              <TierListCard key={index} {...tierListData} />
+              <TierListCard key={index} {...tierListData} index={index} />
             ))}
           </div>
         </>
