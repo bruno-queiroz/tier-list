@@ -7,6 +7,7 @@ const Header = () => {
         <Link
           to="/"
           className="text-[1.290rem] sm:text-4xl text-D font-semibold"
+          data-testid="home"
         >
           TierList Creator
         </Link>
@@ -17,7 +18,9 @@ const Header = () => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/create-tier-list">Create Tier List</Link>
+              <Link to="/create-tier-list" data-testid="create-tier-list">
+                Create Tier List
+              </Link>
             </li>
           </ul>
         </nav>
