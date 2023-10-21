@@ -1,0 +1,42 @@
+{
+  "tierListName": "testing on cypress",
+  "tierList": [
+    {
+      "color": "#FF7F7F",
+      "text": "S",
+      "tierListSelectedItems": []
+    },
+    {
+      "color": "#FFBF7F",
+      "text": "A",
+      "tierListSelectedItems": []
+    },
+    {
+      "color": "#FFDF7F",
+      "text": "B",
+      "tierListSelectedItems": []
+    },
+    {
+      "color": "#FFFF7F",
+      "text": "C",
+      "tierListSelectedItems": []
+    },
+    {
+      "color": "#BFFF7F",
+      "text": "D",
+      "tierListSelectedItems": []
+    }
+  ],
+  "tierListItems": [
+    {
+      "src": "image link"
+    },
+    {
+      "src": "image link"
+    },
+    {
+      "src": "image link"
+    }
+  ],
+  "tierListImage": "image link"
+}
