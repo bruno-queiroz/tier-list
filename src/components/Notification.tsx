@@ -21,6 +21,7 @@ const Notification = () => {
   return (
     <div
       className="fixed z-20 left-0 top-8 bg-primaryDarkGray transition-transform duration-300 p-6 text-D rounded shadow-lg"
+      data-testid="notification"
       style={{
         transform: isNotificationOnScreen
           ? "translateX(0)"

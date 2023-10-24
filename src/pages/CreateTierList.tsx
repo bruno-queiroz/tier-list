@@ -151,7 +151,10 @@ const CreateTierList = () => {
   return (
     <section className="p-4">
       <Notification />
-      <h1 className="text-5xl font-bold text-center my-8">
+      <h1
+        className="text-5xl font-bold text-center my-8"
+        data-testid="create-tier-list-title"
+      >
         Create a Tier List
       </h1>
       <form
@@ -160,11 +163,12 @@ const CreateTierList = () => {
         ref={formRef}
       >
         <label className="flex flex-col gap-4">
-          <span className="font-medium text-xl ">Name of The Tier List</span>
+          <span className="font-medium text-xl ">Name of the Tier List</span>
           <input
             type="text"
             className="bg-primaryDarkGray p-3"
             ref={nameInputRef}
+            data-testid="tier-list-name-input"
             required
           />
         </label>
@@ -184,6 +188,7 @@ const CreateTierList = () => {
               ref={tierListImage}
               name="tierListImage"
               onChange={handleTierListPreviewImg}
+              data-testid="tier-list-cover-img"
               required
             />
           </div>
@@ -209,6 +214,7 @@ const CreateTierList = () => {
               ref={tierListItemsImages}
               multiple
               required
+              data-testid="tier-list-images"
               onChange={handleTierListItemsPreview}
             />
           </div>
@@ -272,6 +278,7 @@ const CreateTierList = () => {
         <button
           className="flex justify-center bg-D text-gray-900 min-w-[90px] font-semibold py-3 px-4 rounded w-[max-content] mx-auto mt-4"
           disabled={postRequestIsLoading}
+          data-testid="submit-tier-list-btn"
         >
           {postRequestIsLoading ? <Spinner /> : "Submit"}
         </button>
