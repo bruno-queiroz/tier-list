@@ -7,46 +7,19 @@
       {
         "color": "#FF7F7F",
         "text": "S",
-        "tierListSelectedItems": [
-          {
-            "src": "https://i.ibb.co/68rqTFP/javascript.png",
-            "_id": "652ab13e6c91f6d31006a623"
-          }
-        ],
+        "tierListSelectedItems": [],
         "_id": "652ab13e6c91f6d31006a622"
       },
       {
         "color": "#FFBF7F",
         "text": "A",
-        "tierListSelectedItems": [
-          {
-            "src": "https://i.ibb.co/G7fQkkk/java.png",
-            "_id": "652ab13e6c91f6d31006a625"
-          },
-          {
-            "src": "https://i.ibb.co/YNLT1qq/rust.png",
-            "_id": "652ab13e6c91f6d31006a626"
-          }
-        ],
+        "tierListSelectedItems": [],
         "_id": "652ab13e6c91f6d31006a624"
       },
       {
         "color": "#FFDF7F",
         "text": "B",
-        "tierListSelectedItems": [
-          {
-            "src": "https://i.ibb.co/h826xDk/phyton.png",
-            "_id": "652ab13e6c91f6d31006a628"
-          },
-          {
-            "src": "https://i.ibb.co/Tb82xTK/ruby.png",
-            "_id": "652ab13e6c91f6d31006a629"
-          },
-          {
-            "src": "https://i.ibb.co/KjwcTJM/kotlin.jpg",
-            "_id": "652ab13e6c91f6d31006a62a"
-          }
-        ],
+        "tierListSelectedItems": [],
         "_id": "652ab13e6c91f6d31006a627"
       },
       {
@@ -58,16 +31,41 @@
       {
         "color": "#BFFF7F",
         "text": "D",
-        "tierListSelectedItems": [
-          {
-            "src": "https://i.ibb.co/PhDyDXN/php.png",
-            "_id": "652ab13e6c91f6d31006a62d"
-          }
-        ],
+        "tierListSelectedItems": [],
         "_id": "652ab13e6c91f6d31006a62c"
       }
     ],
-    "tierListItems": [],
+    "tierListItems": [
+      {
+        "src": "http://localhost:5173/cypress/fixtures/java.png",
+        "_id": "652ab13e6c91f6d31006a628"
+      },
+      {
+        "src": "http://localhost:5173/cypress/fixtures/java.png",
+        "_id": "652ab13e6c91f6d31006a629"
+      },
+      {
+        "src": "http://localhost:5173/cypress/fixtures/java.png",
+        "_id": "652ab13e6c91f6d31006a62a"
+      },
+      {
+        "src": "http://localhost:5173/cypress/fixtures/java.png",
+        "_id": "652ab13e6c91f6d31006a625"
+      },
+      {
+        "src": "http://localhost:5173/cypress/fixtures/java.png",
+        "_id": "652ab13e6c91f6d31006a626"
+      },
+
+      {
+        "src": "http://localhost:5173/cypress/fixtures/java.png",
+        "_id": "652ab13e6c91f6d31006a623"
+      },
+      {
+        "src": "http://localhost:5173/cypress/fixtures/java.png",
+        "_id": "652ab13e6c91f6d31006a62d"
+      }
+    ],
     "__v": 0
   },
   "msg": "Tier List found",
