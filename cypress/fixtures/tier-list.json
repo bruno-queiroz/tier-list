@@ -41,29 +41,12 @@
         "_id": "652ab13e6c91f6d31006a628"
       },
       {
-        "src": "http://localhost:5173/cypress/fixtures/java.png",
+        "src": "http://localhost:5173/cypress/fixtures/javascript.png",
         "_id": "652ab13e6c91f6d31006a629"
       },
       {
-        "src": "http://localhost:5173/cypress/fixtures/java.png",
+        "src": "http://localhost:5173/cypress/fixtures/php.png",
         "_id": "652ab13e6c91f6d31006a62a"
-      },
-      {
-        "src": "http://localhost:5173/cypress/fixtures/java.png",
-        "_id": "652ab13e6c91f6d31006a625"
-      },
-      {
-        "src": "http://localhost:5173/cypress/fixtures/java.png",
-        "_id": "652ab13e6c91f6d31006a626"
-      },
-
-      {
-        "src": "http://localhost:5173/cypress/fixtures/java.png",
-        "_id": "652ab13e6c91f6d31006a623"
-      },
-      {
-        "src": "http://localhost:5173/cypress/fixtures/java.png",
-        "_id": "652ab13e6c91f6d31006a62d"
       }
     ],
     "__v": 0
