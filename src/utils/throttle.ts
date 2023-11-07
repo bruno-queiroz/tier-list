@@ -1,5 +1,5 @@
 export const throttle = () => {
-  let id: number | null = null;
+  let id: NodeJS.Timeout | undefined = undefined;
   return (cb: () => void) => {
     if (id) {
       clearTimeout(id);
