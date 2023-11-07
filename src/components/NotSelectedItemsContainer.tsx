@@ -78,6 +78,7 @@ const NotSelectedItemsContainer = () => {
       onDrop={onDropItemsNotSelectedHandle}
       onDragOver={dragOverHandler}
       onDragEnter={onDragEnterNotSelectedArea}
+      data-testid="not-selected-items"
       id="ableToDrop"
     >
       {tierListItems.map((tierListItem, index) => {
