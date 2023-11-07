@@ -1,4 +1,3 @@
-import html2canvas from "html2canvas";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 
@@ -104,7 +103,10 @@ const TierList = () => {
       onDrop={retrieveItemWhenDroppingOnWrongArea}
       onDragOver={dragOverHandler}
     >
-      <h1 className="text-5xl font-bold text-center my-4">
+      <h1
+        className="text-5xl font-bold text-center my-4"
+        data-testid="tier-list-title"
+      >
         {tierListTitle} TierList
       </h1>
       {isRowModalOpen && (
