@@ -35,6 +35,7 @@ const TierName = ({ color, text, index }: TierNameProps) => {
       <div
         className={`text-xl p-2 w-[140px] text-[#1A1A17] text-center absolute inset-0`}
         contentEditable
+        spellCheck="false"
         style={{
           color: "transparent",
         }}
