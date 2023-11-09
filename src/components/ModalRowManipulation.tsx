@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTierListStore } from "../zustandStore/store";
 import { IoClose as CloseIcon } from "react-icons/io5";
 import { patchTierList } from "../fetch/patchTierList";
@@ -79,11 +79,7 @@ const ModalRowManipulation = () => {
     (state) => state.changeRowModalState
   );
   const rowModalIndex = useTierListStore((state) => state.rowModalIndex);
-  const [textAreaValue, setTextAreaValue] = useState(
-    tierList[rowModalIndex]?.text
-  );
 
-  // need IDs
   const addRowAbove = async () => {
     const tierListClone = [...tierList];
     tierListClone.splice(rowModalIndex, 0, {
@@ -134,14 +130,14 @@ const ModalRowManipulation = () => {
     setTierList(updatedTierList);
   };
 
-  const editItemtext = async (
+  const editItemText = async (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     const updatedTierList = [...tierList];
     updatedTierList[rowModalIndex].text = event.target.value;
 
     await patchTierList(tierListID!, updatedTierList);
-    setTextAreaValue(event.target.value);
+
     setTierList(updatedTierList);
   };
 
@@ -153,7 +149,10 @@ const ModalRowManipulation = () => {
     setTierList(updatedTierList);
   };
   return (
-    <section className="flex flex-col gap-8 py-8 relative">
+    <section
+      className="flex flex-col gap-8 py-8 relative"
+      data-testid="row-modal"
+    >
       <button
         type="button"
         aria-label="close modal"
@@ -184,8 +183,9 @@ const ModalRowManipulation = () => {
         </span>
         <textarea
           className="bg-[#2D2D28] indent-1"
-          value={textAreaValue}
-          onChange={(e) => editItemtext(e)}
+          data-testid="row-modal-textarea"
+          defaultValue={tierList[rowModalIndex].text}
+          onChange={(e) => editItemText(e)}
         ></textarea>
       </label>
       <div className="grid grid-cols-2 gap-4 text-primaryDarkGray font-semibold">
