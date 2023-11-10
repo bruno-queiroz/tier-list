@@ -1,25 +1,9 @@
-const interceptAll = () => {
-  cy.intercept("GET", "/tier-list/*", { fixture: "tier-list" });
-  cy.intercept("PATCH", "/tier-list/*", {
-    statusCode: 200,
-    body: {
-      isOk: true,
-      msg: "Updating from cypress",
-    },
-  }).as("patchTierList");
-  cy.intercept("PATCH", "/tier-list-items/*", {
-    statusCode: 200,
-    body: {
-      isOk: true,
-      msg: "Updating items from cypress",
-    },
-  });
-};
+import { interceptAllTierListManipulations } from "./utils/intercepAllTierListManipulations";
 
 describe("Test Tier list page", () => {
   it("Dragging items to the tier list row 0, 1 and 2", () => {
     cy.visit("/tier-list/123");
-    interceptAll();
+    interceptAllTierListManipulations();
 
     cy.get("[data-testid=tier-list-title]").should("exist");
     cy.get("[data-row-index=0]").children().should("not.exist");
@@ -44,7 +28,7 @@ describe("Test Tier list page", () => {
   });
   it("Dragging item to the tier list row 3", () => {
     cy.visit("/tier-list/123");
-    interceptAll();
+    interceptAllTierListManipulations();
 
     cy.get("[data-testid=tier-list-title]").should("exist");
     cy.get("[data-row-index=0]").children().should("not.exist");
@@ -65,7 +49,7 @@ describe("Test Tier list page", () => {
 
   it("Edit tier name through row modal", () => {
     cy.visit("/tier-list/123");
-    interceptAll();
+    interceptAllTierListManipulations();
 
     cy.get("[data-testid=open-row-modal-0]").click();
 
@@ -103,7 +87,7 @@ describe("Test Tier list page", () => {
   });
   it("Delete tier row", () => {
     cy.visit("/tier-list/123");
-    interceptAll();
+    interceptAllTierListManipulations();
 
     cy.get("[data-testid=open-row-modal-0]").click();
     cy.get("[data-testid=row-modal]").should("be.visible");
