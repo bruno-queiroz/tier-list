@@ -62,4 +62,43 @@ describe("Test Tier list page", () => {
       .children()
       .should("have.length", 2);
   });
+
+  it("Edit tier name through row modal", () => {
+    cy.visit("/tier-list/123");
+    interceptAll();
+
+    cy.get("[data-testid=open-row-modal-0]").click();
+
+    cy.get("[data-testid=row-modal]").should("be.visible");
+
+    cy.get("[data-testid=tier-name-0]").contains("S");
+    cy.get("[data-testid=tier-name-1").contains("A");
+    cy.get("[data-testid=tier-name-2]").contains("B");
+    cy.get("[data-testid=tier-name-3]").contains("C");
+    cy.get("[data-testid=tier-name-4]").contains("D");
+
+    cy.get("[data-testid=row-modal-textarea]").type("testing");
+    cy.get("[data-testid=row-modal-textarea]").should("have.value", "Stesting");
+
+    cy.get("[data-testid=tier-name-0]").contains("Stesting");
+    cy.get("[data-testid=tier-name-1").contains("A");
+    cy.get("[data-testid=tier-name-2]").contains("B");
+    cy.get("[data-testid=tier-name-3]").contains("C");
+    cy.get("[data-testid=tier-name-4]").contains("D");
+
+    cy.get("[data-testid=close-row-modal-btn]").click();
+    cy.get("[data-testid=row-modal]").should("not.exist");
+
+    cy.get("[data-testid=open-row-modal-1]").click();
+    cy.get("[data-testid=row-modal]").should("be.visible");
+
+    cy.get("[data-testid=row-modal-textarea]").type("change");
+    cy.get("[data-testid=row-modal-textarea]").should("have.value", "Achange");
+
+    cy.get("[data-testid=tier-name-0]").contains("Stesting");
+    cy.get("[data-testid=tier-name-1").contains("Achange");
+    cy.get("[data-testid=tier-name-2]").contains("B");
+    cy.get("[data-testid=tier-name-3]").contains("C");
+    cy.get("[data-testid=tier-name-4]").contains("D");
+  });
 });
