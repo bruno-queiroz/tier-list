@@ -101,4 +101,57 @@ describe("Test Tier list page", () => {
     cy.get("[data-testid=tier-name-3]").contains("C");
     cy.get("[data-testid=tier-name-4]").contains("D");
   });
+  it("Delete tier row", () => {
+    cy.visit("/tier-list/123");
+    interceptAll();
+
+    cy.get("[data-testid=open-row-modal-0]").click();
+    cy.get("[data-testid=row-modal]").should("be.visible");
+
+    cy.get("[data-testid=tierlist-container]")
+      .children()
+      .should("have.length", 5);
+
+    cy.get("[data-testid=delete-row-btn]").click();
+
+    cy.get("[data-testid=tierlist-container]")
+      .children()
+      .should("have.length", 4);
+
+    cy.get("[data-testid=open-row-modal-0]").click();
+    cy.get("[data-testid=row-modal]").should("be.visible");
+
+    cy.get("[data-testid=delete-row-btn]").click();
+
+    cy.get("[data-testid=tierlist-container]")
+      .children()
+      .should("have.length", 3);
+
+    cy.get("[data-testid=open-row-modal-0]").click();
+    cy.get("[data-testid=row-modal]").should("be.visible");
+
+    cy.get("[data-testid=delete-row-btn]").click();
+
+    cy.get("[data-testid=tierlist-container]")
+      .children()
+      .should("have.length", 2);
+
+    cy.get("[data-testid=open-row-modal-0]").click();
+    cy.get("[data-testid=row-modal]").should("be.visible");
+
+    cy.get("[data-testid=delete-row-btn]").click();
+
+    cy.get("[data-testid=tierlist-container]")
+      .children()
+      .should("have.length", 1);
+
+    cy.get("[data-testid=open-row-modal-0]").click();
+    cy.get("[data-testid=row-modal]").should("be.visible");
+
+    cy.get("[data-testid=delete-row-btn]").click();
+
+    cy.get("[data-testid=tierlist-container]")
+      .children()
+      .should("have.length", 0);
+  });
 });
