@@ -138,4 +138,28 @@ describe("Test Tier list page", () => {
       .children()
       .should("have.length", 0);
   });
+
+  it("Clear tier row images", () => {
+    cy.visit("/tier-list/123");
+    interceptAllTierListManipulations();
+
+    cy.get("[data-item-not-selected-index=0]").drag("[data-row-index=0]");
+    cy.get("[data-row-index=0]")
+      .children("[data-tierlist-item-index=0]")
+      .should("have.length", 1);
+    cy.get("[data-testid=not-selected-items]")
+      .children()
+      .should("have.length", 2);
+
+    cy.get("[data-testid=open-row-modal-0]").click();
+    cy.get("[data-testid=row-modal]").should("be.visible");
+
+    cy.get("[data-testid=clear-row-imgs-btn]").click();
+    cy.get("[data-row-index=0]")
+      .children("[data-tierlist-item-index=0]")
+      .should("have.length", 0);
+    cy.get("[data-testid=not-selected-items]")
+      .children()
+      .should("have.length", 3);
+  });
 });
