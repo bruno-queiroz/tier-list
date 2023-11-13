@@ -162,4 +162,27 @@ describe("Test Tier list page", () => {
       .children()
       .should("have.length", 3);
   });
+  it("Add new tier rows", () => {
+    cy.visit("/tier-list/123");
+    interceptAllTierListManipulations();
+
+    cy.get("[data-testid=open-row-modal-0]").click();
+    cy.get("[data-testid=row-modal]").should("be.visible");
+
+    cy.get("[data-testid=tierlist-container]")
+      .children()
+      .should("have.length", 5);
+
+    cy.get("[data-testid=add-row-above-btn]").click();
+
+    cy.get("[data-testid=tierlist-container]")
+      .children()
+      .should("have.length", 6);
+
+    cy.get("[data-testid=add-row-below-btn]").click();
+
+    cy.get("[data-testid=tierlist-container]")
+      .children()
+      .should("have.length", 7);
+  });
 });
