@@ -29,7 +29,10 @@ const TierName = ({ color, text, index }: TierNameProps) => {
       className="flex justify-center items-center relative"
       style={{ backgroundColor: color }}
     >
-      <div className="text-xl p-2 w-[140px] text-[#1A1A17] text-center">
+      <div
+        className="text-xl p-2 w-[140px] text-[#1A1A17] text-center"
+        data-testid={`tier-name-${index}`}
+      >
         {text}
       </div>
       <div

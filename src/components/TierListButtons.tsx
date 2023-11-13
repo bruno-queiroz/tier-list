@@ -1,4 +1,3 @@
-import React from "react";
 import { AiFillSetting as SettingsIcon } from "react-icons/ai";
 import {
   MdOutlineKeyboardArrowDown as ArrowDownIcon,
@@ -59,6 +58,7 @@ const TierListButtons = ({ index }: { index: number }) => {
       <div className="flex items-center leading-[0] h-[120px] gap-2 text-5xl">
         <button
           className="pl-[5px]"
+          data-testid={`open-row-modal-${index}`}
           onClick={() => handleOpenModalRowManipulation(index)}
         >
           <SettingsIcon />

@@ -117,6 +117,7 @@ const TierList = () => {
 
       <div
         className="flex flex-col max-w-[1300px] w-full mx-auto"
+        data-testid="tierlist-container"
         ref={tierListRef}
       >
         {tierList?.map((row, index) => (

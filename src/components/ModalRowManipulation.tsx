@@ -156,6 +156,7 @@ const ModalRowManipulation = () => {
       <button
         type="button"
         aria-label="close modal"
+        data-testid="close-row-modal-btn"
         className="absolute top-1 right-1 text-2xl"
         onClick={() => changeModalRowState(false)}
       >
@@ -189,16 +190,32 @@ const ModalRowManipulation = () => {
         ></textarea>
       </label>
       <div className="grid grid-cols-2 gap-4 text-primaryDarkGray font-semibold">
-        <button className="py-4 rounded bg-S" onClick={deleteRow}>
+        <button
+          className="py-4 rounded bg-S"
+          onClick={deleteRow}
+          data-testid="delete-row-btn"
+        >
           Delete This Row
         </button>
-        <button className="py-4 rounded bg-A" onClick={clearRowImages}>
+        <button
+          className="py-4 rounded bg-A"
+          onClick={clearRowImages}
+          data-testid="clear-row-imgs-btn"
+        >
           Clear This Row Images
         </button>
-        <button className="py-4 rounded bg-C" onClick={addRowAbove}>
+        <button
+          className="py-4 rounded bg-C"
+          onClick={addRowAbove}
+          data-testid="add-row-above-btn"
+        >
           Add a Row Above
         </button>
-        <button className="py-4 rounded bg-D" onClick={addRowBelow}>
+        <button
+          className="py-4 rounded bg-D"
+          onClick={addRowBelow}
+          data-testid="add-row-below-btn"
+        >
           Add a Row Below
         </button>
       </div>
