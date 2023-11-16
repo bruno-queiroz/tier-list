@@ -183,7 +183,7 @@ const CreateTierList = () => {
           <div className="absolute bottom-0">
             <input
               type="file"
-              accept="image/png, image/jpeg, image/jpe"
+              accept="image/*"
               className="sr-only"
               ref={tierListImage}
               name="tierListImage"
@@ -208,7 +208,7 @@ const CreateTierList = () => {
           <div className="absolute bottom-0">
             <input
               type="file"
-              accept="image/png, image/jpeg"
+              accept="image/*"
               className="sr-only"
               name="tierListItems"
               ref={tierListItemsImages}
