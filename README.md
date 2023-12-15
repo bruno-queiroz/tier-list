@@ -1,6 +1,6 @@
 # Tier List Creator
 
-This is a project inspired by the TierMaker website that developed to learn new technologies and put on my portfolio.
+This is a project inspired by the TierMaker website that I developed to learn new technologies and put on my portfolio.
 
 ## How to start the project
 
