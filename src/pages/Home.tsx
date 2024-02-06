@@ -26,7 +26,7 @@ const Home = () => {
         to="/create-tier-list"
         className="py-3 px-4 rounded bg-D font-semibold text-primaryDarkGray w-[max-content]"
       >
-        Create Tier List
+        Create Tier List testing
       </Link>
 
       {isLoading ? (
