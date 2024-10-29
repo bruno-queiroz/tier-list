@@ -1,1 +1,1 @@
-export const apiBaseUrl = "https://tier-list-api.cyclic.app";
+export const apiBaseUrl = "https://tier-list-api.onrender.com";
